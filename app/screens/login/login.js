@@ -6,11 +6,12 @@ import { Avatar } from 'react-native-paper'
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
-import { SaveLogin, SaveUser } from '../../actions/loginActions';
+import { SaveLogin, SaveToken, SaveUser } from '../../actions/loginActions';
 import { Config } from '../../configuration/config';
 import { SvgUri } from 'react-native-svg'
-import { storeUserData } from '../../utils/AsyncStore';
+import { storeTokenJWT, storeUserData } from '../../utils/AsyncStore';
 import SpinnerModal from '../../utils/components/spinnerModal';
+import parseJwt from '../../utils/parseJwt';
 export default function Login(props) {
     const navigation = useNavigation()
     const dispatch = useDispatch();
@@ -35,11 +36,15 @@ export default function Login(props) {
                 setLoading(true)
                 const res = await Axios.post(url_data, formData);
                 console.log(res.data);
-                if (res.data.objModel.length > 0) {
+                if (res.data.objModel.access_Token) {
+                    let user = res.data.objModel.infouser
+                    await storeTokenJWT(res.data.objModel.access_Token)
+                    await storeUserData(user)
                     setLoading(false)
+                    dispatch(SaveToken(res.data.objModel.access_Token))
                     dispatch(SaveUser(res.data.objModel))
                     dispatch(SaveLogin(true))
-                    await storeUserData(res.data.objModel)
+                    
                 } else {
                     setLoading(false)
                     Alert.alert(

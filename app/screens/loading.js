@@ -5,7 +5,7 @@ const Loading = ({ view, logout }) => {
     return (
         <View style={styles.container}>
             {/* <ImageBackground style={styles.container} source={require("../../assets/banner_deg.png")}> */}
-            <Image source={require("../../assets/fondo.jpg")} style={{width:240,height:111}} resizeMode="contain" />
+            <Image source={require("../../assets/logobarber.png")} style={{width:240,height:111}} resizeMode="contain" />
             {/* <Image
                 style={styles.image}
                 source={require("../../assets/logo.png")} /> */}

@@ -7,7 +7,7 @@ import { useTheme } from '@react-navigation/native';
 import Loading from './app/screens/loading';
 import LoginStack from './app/navigator/loginStack'
 import HomeStack from './app/navigator/SideBar/homeStack';
-import { getListFertilizantes, getListRegisters, getListRiesgo, getListTipFertilizantes, getListTipRiesgo, getUserData } from './app/utils/AsyncStore';
+import { getJWT, getListFertilizantes, getListRegisters, getListRiesgo, getListTipFertilizantes, getListTipRiesgo, getUserData } from './app/utils/AsyncStore';
 import { AddRegistersFertilizantes, AddRegistersRiesgo, AddRegistersTipFertilizantes, AddRegistersTipRiesgo, SaveListFertilizantes, SaveListRegisters, SaveListRiesgo, SaveListTipFertilizantes, SaveListTipRiesgo } from './app/actions/ProductionActions';
 import { SaveLogin, SaveUser } from './app/actions/loginActions';
 
@@ -26,6 +26,7 @@ const Routes_init = () => {
             const list3 = await getListFertilizantes()
             const list4 = await getListTipRiesgo()
             const list5 = await getListTipFertilizantes()
+            const jwt = await getJWT()
             const user = await getUserData()
             console.log("lista de registros:", list)
             console.log("lista de registros2:", list2)
@@ -38,12 +39,16 @@ const Routes_init = () => {
             if (list3) dispatch(SaveListFertilizantes(list3))
             if (list4) dispatch(SaveListTipRiesgo(list4))
             if (list5) dispatch(SaveListTipFertilizantes(list5))
-            if (user) {
+            if (jwt) {
+                dispatch(SaveToken(jwt))
                 dispatch(SaveUser(user))
+                /* const stores = await getStoresByUserAdmin() //esta parte lo hago en navigator/SideBarStack.jsx
+                console.log("stores:", stores) 
+                dispatch(rechargeStoreInfo(stores))*/
                 dispatch(SaveLogin(true))
 
             } else {
-                dispatch(SaveLogin(null))
+                dispatch(SaveLogin(false))
                 dispatch(SaveUser(null))
             }
         }
@@ -55,8 +60,10 @@ const Routes_init = () => {
             <StatusBar barStyle= { theme.dark ? "light-content" : "dark-content" } backgroundColor={"#b99a55"}/>
             <NavigationContainer >
                 <Stack.Navigator screenOptions={{ headerShown: false }}>
-                    {LoginState == null &&
-                        <Stack.Screen name='validation_jwt' component={LoginStack} options={{ headerShown: false }} ></Stack.Screen>}
+                {LoginState === null &&
+                        <Stack.Screen name='validation_jwt' component={Loading} options={{ headerShown: false }} ></Stack.Screen>}
+                    {LoginState == false &&
+                        <Stack.Screen name='ValidationStack' component={LoginStack} options={{ headerShown: false }} ></Stack.Screen>}
                     {LoginState &&
                         <Stack.Screen name='Sidebar' component={SideBarStack} options={{ headerShown: false }} />}
 
