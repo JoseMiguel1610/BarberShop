@@ -32,27 +32,37 @@ import textos from '../../styles/textos';
 import { getSTATUS_FLOW } from '../../../app/screens/sidebar/Kdriver/KDWaitingOrder/Async/async_orders'
 import { AuthContext } from './context';
 import { Config } from '../../configuration/config';
+import { actionByError } from '../../utils/actionServerResponse';
 
 export function DrawerContent(props) {
     //const { initAdrress: { country } } = useSelector(reducers => reducers.deliveryReducer);
-    const [flag, setFlag] = useState("");
+    const navigation = useNavigation();
     const paperTheme = useTheme();
     const { toggleTheme } = React.useContext(AuthContext);
     const [rol, setRol] = useState(5)
-    const User = useSelector(reducers => reducers.loginReducer).User;
-    const url_data = Config.URL_SERVER
+    const [name, setName] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [ sexo, setSexo ] = useState(null)
+    const url_data = Config.URL_SERVER + "/Usuarios"
     console.log("rol", rol);
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    console.log("USuario:", User);
     useEffect(() => {
         async function getUser() {
             try {
-                const res = await Axios.get(url_data + "/" + User[0].dni);
+                const res = await Axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
+                console.log("INFOOOO", res.data);
                 const userData = res.data.objModel[0]
                 console.log("UsuarioData: ", userData);
                 if (res.data.objModel.length > 0) {
                     setRol(userData.iD_ROL)
+                    setEmail(userData.correo)
+                    setName(userData.nombre)
+                    setSexo(userData.iD_SEXO)
                 }
             }
-            catch (e) {
+            catch (error) {
+                actionByError(error, navigation)
             }
         }
         getUser()
@@ -63,7 +73,7 @@ export function DrawerContent(props) {
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <Perfil />
+                        <Perfil correo={email} nombre={name} sexo={sexo}/>
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>

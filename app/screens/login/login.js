@@ -19,7 +19,7 @@ export default function Login(props) {
     const [loading, setLoading] = useState(false)
     const [contrasena, setPassword] = useState(null)
     const [showPassword, setShowPassWord] = useState(false);
-    const url_data =  Config.URL_SERVER + "/login"
+    const url_data =  Config.URL_SERVER + "/Account/login"
 
 
 
@@ -32,17 +32,18 @@ export default function Login(props) {
             )
         } else {
             const formData = { "correo": username, "contrasena": contrasena }
+            console.log(formData);
             try {
                 setLoading(true)
                 const res = await Axios.post(url_data, formData);
                 console.log(res.data);
-                if (res.data.objModel.access_Token) {
+                if (res.data.objModel) {
                     let user = res.data.objModel.infouser
                     await storeTokenJWT(res.data.objModel.access_Token)
                     await storeUserData(user)
                     setLoading(false)
                     dispatch(SaveToken(res.data.objModel.access_Token))
-                    dispatch(SaveUser(res.data.objModel))
+                    dispatch(SaveUser(user))
                     dispatch(SaveLogin(true))
                     
                 } else {
@@ -58,7 +59,6 @@ export default function Login(props) {
                         ]
                     )
                 }
-                //props.navigation.replace('SideBarStack');//No es necesario, y hace renderizar 2 veces.
             } catch (error) {
                 setLoading(false)
                 Alert.alert(

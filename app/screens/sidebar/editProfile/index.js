@@ -14,9 +14,9 @@ import { storeUserData } from '../../../utils/AsyncStore'
 import BtnForm1 from '../../../utils/components/btnForm1';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Config } from '../../../configuration/config';
+import { actionByError } from '../../../utils/actionServerResponse';
 
 const EditProfile = ({ navigation }) => {
-    const User = useSelector(reducers => reducers.loginReducer).User;
     const [formData, setFormData] = useState(formDataInit)
     const [loading1, setLoading1] = useState(false)
     const [loading2, setLoading2] = useState(false)
@@ -35,7 +35,9 @@ const EditProfile = ({ navigation }) => {
     const [date, setDate] = useState(null)
     const [isModalVisible, setModalVisible] = useState(false);
     const [avatarSource, setAvatarSource] = useState(null)
-    const url_data = Config.URL_SERVER
+    const url_data = Config.URL_SERVER + "/Usuarios"
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    console.log("User", User);
     const openModal = () => {
         setModalVisible(true);
     };
@@ -51,7 +53,7 @@ const EditProfile = ({ navigation }) => {
         async function getUser() {
             setLoading1(true)
             try {
-                const res = await Axios.get(url_data + "/" + User[0].dni);
+                const res = await Axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
                 const userData = res.data.objModel[0]
                 if(res.data.objModel.length > 0){
                     setDni(userData.dni)
@@ -67,6 +69,7 @@ const EditProfile = ({ navigation }) => {
             }
             catch(e){
                 setLoading1(false)
+                actionByError(error, navigation)
             }
             
             
@@ -107,24 +110,17 @@ const EditProfile = ({ navigation }) => {
             }
             console.log(formData);
             try {
-                const res = await Axios.put(url_data, formData);
+                const res = await Axios.put(url_data, formData, { headers: { "authorization": `Bearer ${Token}` } });
                 console.log(res.data);
-                const response = res.data.objModel
-                dispatch(SaveUser(response))
-                await storeUserData(response)
                 setLoading2(false)
                 Alert.alert(
                     "Mensaje",
-                    "Sus datos fueron actualizados",
+                    "Sus datos fueron actualizados.",
                     [{ text: "Aceptar", style: "default" }]
                 )
             } catch (error) {
                 setLoading2(false)
-                Alert.alert(
-                    "Error",
-                    "Ocurrió un error al actualizar los datos.",
-                    [{ text: "Aceptar", style: "default" }]
-                )
+                actionByError(error, navigation)
             }
         }
     }

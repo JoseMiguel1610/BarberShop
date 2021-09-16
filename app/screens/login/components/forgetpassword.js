@@ -24,7 +24,7 @@ export default function ForgetPassword(props) {
     const [email, setEmail] = useState(null)
     const [contrasena, setPassword] = useState(null)
     const [showPassword, setShowPassWord] = useState(false);
-    const url_data = Config.URL_SERVER +  "/forgetpassword"
+    const url_data = Config.URL_SERVER +  "/Account/forgetpassword"
 
     const onSummit = async () => {
         if (!email) {

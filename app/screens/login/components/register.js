@@ -55,7 +55,7 @@ export default function Register(props) {
         setModalVisible(false);
     }
 
-    const url_data = Config.URL_SERVER + "/register"
+    const url_data = Config.URL_SERVER + "/Account/register"
     const onSummit = async () => {
         if (!name || !dni || !email || !contrasena || !birthdate || !lastnameP || !lastnameM || !sexo) {
             return Alert.alert(

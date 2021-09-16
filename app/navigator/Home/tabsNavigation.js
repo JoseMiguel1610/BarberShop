@@ -19,6 +19,7 @@ import { Image } from 'react-native';
 import Row_simple from '../../utils/components/row_simple';
 import { useSelector } from 'react-redux';
 import { Dimensions } from 'react-native';
+import EditUser from '../../screens/sidebar/business/editUser';
 
 
 // const Tab = createBottomTabNavigator();
@@ -131,7 +132,7 @@ export default function TabsNavigation({ navigation }) {
                 {/* borrado pa  q  queden solo 4  */}
                 <Tab.Screen name='shop_home5' component={Home}
                     options={{ title: "" }}></Tab.Screen>
-                <Tab.Screen name='shop_home6' component={Home}
+                <Tab.Screen name='shop_home6' component={EditUser}
                     options={{ title: "" }}></Tab.Screen>
                 {/* <Tab.Screen name='shop_home7' component={Home}
                     options={{ title: "" }}></Tab.Screen> */}

@@ -9,7 +9,7 @@ import LoginStack from './app/navigator/loginStack'
 import HomeStack from './app/navigator/SideBar/homeStack';
 import { getJWT, getListFertilizantes, getListRegisters, getListRiesgo, getListTipFertilizantes, getListTipRiesgo, getUserData } from './app/utils/AsyncStore';
 import { AddRegistersFertilizantes, AddRegistersRiesgo, AddRegistersTipFertilizantes, AddRegistersTipRiesgo, SaveListFertilizantes, SaveListRegisters, SaveListRiesgo, SaveListTipFertilizantes, SaveListTipRiesgo } from './app/actions/ProductionActions';
-import { SaveLogin, SaveUser } from './app/actions/loginActions';
+import { SaveLogin, SaveToken, SaveUser } from './app/actions/loginActions';
 
 const Stack = createStackNavigator();
 const Routes_init = () => {
@@ -21,25 +21,12 @@ const Routes_init = () => {
     console.log('que hay:', LoginState);
     useEffect(() => {
         async function getList() {
-            const list = await getListRegisters()
-            const list2 = await getListRiesgo()
-            const list3 = await getListFertilizantes()
-            const list4 = await getListTipRiesgo()
-            const list5 = await getListTipFertilizantes()
             const jwt = await getJWT()
+            console.log("JWT", jwt);
             const user = await getUserData()
-            console.log("lista de registros:", list)
-            console.log("lista de registros2:", list2)
-            console.log("lista de registros3:", list3)
-            console.log("lista de registros4:", list4)
-            console.log("lista de registros5:", list5)
             console.log("usuario?:", user)
-            if (list) dispatch(SaveListRegisters(list))
-            if (list2) dispatch(SaveListRiesgo(list2))
-            if (list3) dispatch(SaveListFertilizantes(list3))
-            if (list4) dispatch(SaveListTipRiesgo(list4))
-            if (list5) dispatch(SaveListTipFertilizantes(list5))
             if (jwt) {
+                console.log("Entra?");
                 dispatch(SaveToken(jwt))
                 dispatch(SaveUser(user))
                 /* const stores = await getStoresByUserAdmin() //esta parte lo hago en navigator/SideBarStack.jsx

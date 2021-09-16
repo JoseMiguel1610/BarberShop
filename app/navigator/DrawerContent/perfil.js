@@ -9,35 +9,12 @@ import { Config } from '../../configuration/config';
 import Axios from 'axios';
 
 
-const Perfil = () => {
+const Perfil = (props) => {
     const url_data = Config.URL_SERVER
-    const [name, setName] = useState(null)
-    const [email, setEmail] = useState(null)
-    const [ sexo, setSexo ] = useState(null)
+    const { correo, nombre, sexo} = props;
     const User = useSelector(reducers => reducers.loginReducer).User;
     const navigation = useNavigation()
     const photoDefaut = 'https://i.stack.imgur.com/34AD2.jpg'
-
-    useEffect(() => {
-        async function getUser() {
-            try {
-                const res = await Axios.get(url_data + "/" + User[0].dni);
-                const userData = res.data.objModel[0]
-                console.log(userData);
-                if (res.data.objModel.length > 0) {
-                    setEmail(userData.correo)
-                    setName(userData.nombre)
-                    setSexo(userData.iD_SEXO)
-                }
-            }
-            catch (e) {
-            }
-
-
-
-        }
-        getUser()
-    }, [User])
 
     return (
         <View style={{ flexDirection: 'row', marginTop: 15, display: 'flex', alignItems: 'center' }}>
@@ -52,8 +29,8 @@ const Perfil = () => {
                 size={100}
             />}
             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                <Title style={styles.title}>{name}</Title>
-                <Caption ellipsizeMode='tail' numberOfLines={1} style={styles.caption}>{email}</Caption>
+                <Title style={styles.title}>{nombre}</Title>
+                <Caption ellipsizeMode='tail' numberOfLines={1} style={styles.caption}>{correo}</Caption>
             </View>
         </View>
     )
