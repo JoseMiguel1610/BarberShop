@@ -77,11 +77,6 @@ export default function Login(props) {
 
     };
 
-    const onSignUp = async () => {
-
-
-    };
-
     return (
         <ImageBackground style={styles.container} resizeMode='cover' source={require("../../../assets/fondo-02.png")}>
             <SpinnerModal loading={loading} text="Iniciando sesión" />

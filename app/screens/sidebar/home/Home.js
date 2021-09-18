@@ -47,15 +47,12 @@ export default function Home(props) {
 }
 
 const categories = [
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
-    {name: "Corte"},
+    {name: "Cortes"},
+    {name: "Barba"},
+    {name: "Mascarillas"},
+    {name: "Masajes"},
+    {name: "Peinado"},
+    {name: "Tintes"}
 ]
 
 const styles = StyleSheet.create({

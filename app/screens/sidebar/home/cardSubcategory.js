@@ -16,7 +16,7 @@ const CardSubcategory = (props) => {
         <View style={[styles.card, style || {}]}>
             <Pressable style={styles.container_image} android_ripple={{ color: "#fff" }}
                 onPress={() => {}}>
-                    <Image source={require("../../../../assets/addimagen.png")} style={{ width: 80, height: 80 }} />
+                    <Image source={require("../../../../assets/addimagen.png")} style={{ width: 95, height: 95 }} />
             </Pressable>
             <Text style={[styles.description, { color: theme.dark ? "#fff" : "black" }]}  numberOfLines={1}> {name} </Text>
         </View>
@@ -27,7 +27,7 @@ export default CardSubcategory
 
 const styles = StyleSheet.create({
     card: {
-        width: 80,
+        width: 95,
         marginVertical: 8
     },
     container_image: {

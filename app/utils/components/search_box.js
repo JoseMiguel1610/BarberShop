@@ -14,6 +14,7 @@ const Search_box = (props) => {
     const {onChange}= props
     const {w} =props;
     const {h} =props;
+    const { colorTexto } = props;
     
 
 
@@ -28,7 +29,7 @@ const Search_box = (props) => {
             <Icon  style={styles.icon} name='search' size={20} color={col_text}/>
             {/* <Text>|</Text> */}
 
-                <TextInput style={{fontSize: fontSz ? fontSz : 12, fontFamily: fontF}} placeholder={place} placeholderTextColor={col_text}
+                <TextInput style={{fontSize: fontSz ? fontSz : 16, fontFamily: fontF, color: colorTexto ? colorTexto : "black"}} placeholder={place} placeholderTextColor={col_text}
                      onChangeText={text => onChange(text) } placeholderF   />
             </View>
         </View>

@@ -67,7 +67,7 @@ const EditProfile = ({ navigation }) => {
                     setLoading1(false)
                 }
             }
-            catch(e){
+            catch(error){
                 setLoading1(false)
                 actionByError(error, navigation)
             }

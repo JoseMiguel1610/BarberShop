@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from "react-native"
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,6 +20,10 @@ import Row_simple from '../../utils/components/row_simple';
 import { useSelector } from 'react-redux';
 import { Dimensions } from 'react-native';
 import EditUser from '../../screens/sidebar/business/editUser';
+import axios from 'axios';
+import { actionByError } from '../../utils/actionServerResponse';
+import { Config } from '../../configuration/config';
+import Asd from '../../screens/sidebar/asd';
 
 
 // const Tab = createBottomTabNavigator();
@@ -35,6 +39,27 @@ export default function TabsNavigation({ navigation }) {
         marginTop: -10,
 
     };
+    const url_data = Config.URL_SERVER + "/Usuarios"
+    const [rol, setRol] = useState()
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const res = await axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
+                console.log("INFOOOO", res.data);
+                const userData = res.data.objModel[0]
+                console.log("UsuarioData: ", userData);
+                if (res.data.objModel.length > 0) {
+                    setRol(userData.iD_ROL)
+                }
+            }
+            catch (error) {
+                actionByError(error, navigation)
+            }
+        }
+        getUser()
+    },)
 
 
     return (
@@ -65,7 +90,7 @@ export default function TabsNavigation({ navigation }) {
                     tabBarIndicatorStyle: {
                         height: 3,
                         // marginLeft:((Dimensions.get('window').width)/4)-65,
-                        width: ((Dimensions.get('window').width) / 4),
+                        width: rol == 1 || rol == 3 ? ((Dimensions.get('window').width) / 4) : Dimensions.get('window').width /2.5,
                         marginLeft: 20,
                         top: 0,
                     },
@@ -130,10 +155,13 @@ export default function TabsNavigation({ navigation }) {
 
                     options={{ title: "" }}></Tab.Screen>
                 {/* borrado pa  q  queden solo 4  */}
-                <Tab.Screen name='shop_home5' component={Home}
+                <Tab.Screen name='shop_home5' component={Asd}
                     options={{ title: "" }}></Tab.Screen>
+                    {rol == 1 || rol == 3 ?
                 <Tab.Screen name='shop_home6' component={EditUser}
                     options={{ title: "" }}></Tab.Screen>
+                    : 
+                    null }
                 {/* <Tab.Screen name='shop_home7' component={Home}
                     options={{ title: "" }}></Tab.Screen> */}
             </Tab.Navigator>

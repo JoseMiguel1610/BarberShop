@@ -10,7 +10,7 @@ export function actionByError(error, navigation) {
                 [
                     {
                         text: "Ok",
-                        onPress: () => navigation.navigate('SideLogout')
+                        onPress: () => { navigation.navigate('SideLogout') }
                     }
                 ]
             )

@@ -139,7 +139,7 @@ export default function ForgetPassword(props) {
                         <>
                             <View style={{ marginTop: 50, paddingHorizontal: 20, width: "85%" }}>
                                 <View>
-                                    <Text style={{ textAlign: 'left', fontSize: 15, color: "#fff" }}>Se restablecio su contraseña,
+                                    <Text style={{ textAlign: 'left', fontSize: 15, color: "#fff" }}>Se restableció su contraseña,
                                         se le envió su nueva contraseña a: </Text>
                                     <View style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 50 }}>
                                         <Text style={{ fontSize: 15, color: "#fff" }}>

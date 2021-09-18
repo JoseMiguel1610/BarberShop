@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import {
     useTheme,
     Avatar,
@@ -18,14 +18,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import IconMaterialC from 'react-native-vector-icons/MaterialCommunityIcons';
+import Oticons from 'react-native-vector-icons/Octicons'
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { Colors } from '../../styles/colors';
 import Perfil from './perfil';
-import Icons_super from './icons_super';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
-import Invita_y_gana from './invita_y_gana';
-import DiscountsCard from './discountsCard';
 import textos from '../../styles/textos';
 // de prueba
 //import NotifService from '../../../src/NotifService'
@@ -42,8 +40,9 @@ export function DrawerContent(props) {
     const [rol, setRol] = useState(5)
     const [name, setName] = useState(null)
     const [email, setEmail] = useState(null)
-    const [ sexo, setSexo ] = useState(null)
+    const [sexo, setSexo] = useState(null)
     const url_data = Config.URL_SERVER + "/Usuarios"
+    const url_data2 = Config.URL_SERVER + "/Backup"
     console.log("rol", rol);
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
     console.log("USuario:", User);
@@ -66,14 +65,43 @@ export function DrawerContent(props) {
             }
         }
         getUser()
-    },)
+    })
+
+    const createBackup = async () => {
+        try {
+            const res = await Axios.get(url_data2, { headers: { "authorization": `Bearer ${Token}` } });
+            console.log("BAKCUP", res.data);
+            Alert.alert(
+                "Excelente",
+                "El respaldo de información se hizo correctamente.",
+                [
+                    {
+                        text: "Ok",
+                        onPress: () => { }
+                    }
+                ]
+            )
+        }
+        catch (error) {
+            Alert.alert(
+                "Error",
+                "Ocurrió un error al hacer el respaldo de información.",
+                [
+                    {
+                        text: "Ok",
+                        onPress: () => { }
+                    }
+                ]
+            )
+        }
+    }
 
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <Perfil correo={email} nombre={name} sexo={sexo}/>
+                        <Perfil correo={email} nombre={name} sexo={sexo} />
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
@@ -88,6 +116,16 @@ export function DrawerContent(props) {
                             label="Home"
                             onPress={() => { props.navigation.navigate('HomeTabs') }}
                         />
+                        {rol == 5 ? <DrawerItem
+                            icon={({ color, size }) => (
+                                <Oticons name='checklist' color={color} size={size} />
+                            )}
+                            label="Historial de Citas"
+                            onPress={() => { }}
+                        />
+                            :
+                            null
+                        }
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <IconMaterialC
@@ -108,7 +146,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Respaldo de Información"
-                            onPress={() => { props.navigation.navigate('Profile') }}
+                            onPress={() => { createBackup() }}
                         />
                             :
                             null

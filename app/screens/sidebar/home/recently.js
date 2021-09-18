@@ -9,7 +9,6 @@ const Recently = () => {
         <View style={styles.container}>
             <View style={styles.container_text}>
                 <Text style={[styles.text, { color: theme.dark ? "#fff" : "black"}]}>Destacados...</Text>
-                <Text style={[styles.watch, { color: theme.dark ? "#fff" : "black"}]}>Ver todo +</Text>
             </View>
             <ScrollView horizontal style={{ paddingBottom: 3 }} showsHorizontalScrollIndicator={false}>
                 {

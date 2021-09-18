@@ -1,3 +1,3 @@
 export const Config = {
-    URL_SERVER: 'https://f3b5-161-132-234-113.ngrok.io/api'
+    URL_SERVER: 'https://71e7-161-132-234-113.ngrok.io/api'
 }
