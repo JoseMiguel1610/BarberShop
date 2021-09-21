@@ -36,7 +36,9 @@ export default function Register(props) {
     const [dni, setDni] = useState(null)
     const [email, setEmail] = useState(null)
     const [contrasena, setPassword] = useState(null)
+    const [contrasenaC, setPasswordC] = useState(null)
     const [showPassword, setShowPassWord] = useState(false);
+    const [showPasswordC, setShowPassWordC] = useState(false);
     const [date, setDate] = useState(initDateSelect)
     const [birthdate, setBirthdate] = useState("");
     const [lastnameP, setLastNameP] = useState(null);
@@ -67,10 +69,17 @@ export default function Register(props) {
             if (!validateMail(email)) {
                 Alert.alert(
                     "Alerta",
-                    "Ingrese un email válido",
+                    "Ingrese un email válido.",
                     [{ text: "Aceptar", style: "default" }]
                 )
-            } else {
+            } else if (contrasena != contrasenaC) {
+                Alert.alert(
+                    "Error",
+                    "Las contraseñas no coinciden.",
+                    [{ text: "Aceptar", style: "default" }]
+                )
+            }
+            else {
                 const formData = {
                     dni: dni,
                     apE_PAT: lastnameP,
@@ -228,6 +237,23 @@ export default function Register(props) {
                                     onPress={() => setShowPassWord(false)} /> :
                                     <Icon name='ios-eye-outline' color="#868686" size={20} style={{ marginRight: 10 }}
                                         onPress={() => setShowPassWord(true)} />
+                            }
+                        </View>
+                        <View style={styles.container_input}>
+                            <Icon4 name='lock' color={"#868686"} size={20} />
+                            <TextInput
+                                placeholder='Confirmar Password'
+                                placeholderTextColor="#fff"
+                                keyboardType="default"
+                                secureTextEntry={showPasswordC ? false : true}
+                                onChangeText={(e) => setPasswordC(e)}
+                                style={styles.input}
+                            />
+                            {
+                                showPasswordC ? <Icon name='md-eye-off-outline' color="#868686" size={20} style={{ marginRight: 10 }}
+                                    onPress={() => setShowPassWordC(false)} /> :
+                                    <Icon name='ios-eye-outline' color="#868686" size={20} style={{ marginRight: 10 }}
+                                        onPress={() => setShowPassWordC(true)} />
                             }
                         </View>
                         <View style={[styles.container_input, { paddingRight: 20 }]}>
