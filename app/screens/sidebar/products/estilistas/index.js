@@ -6,9 +6,14 @@ import ItemStore from './itemStore'
 import { useSelector } from 'react-redux'
 import SpinnerModal from '../../../../utils/components/spinnerModal'
 import MapShops from '../components/mapShops'
+import axios from 'axios'
+import { Config } from '../../../../configuration/config'
+import { actionByError } from '../../../../utils/actionServerResponse'
 
 const Estilitas = (props) => {
     const { navigation, route: { params } } = props
+    console.log("params props:", params);
+    const { id, iD_SERVICIO } = params
     const [selectOption, setSelectOption] = useState(0)
     const [stores, setStores] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -17,6 +22,8 @@ const Estilitas = (props) => {
     const [searchEnabled, setSearchEnabled] = useState(false)
     const [focus, setFocus] = useState(true)
     const nameCategory = "Estilistas"
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    const url_data = Config.URL_SERVER + "/Estilistas/"
 
     const estilistas = [
         {id: 1, nameStore: "Pepito", nameSubcategory: "fade"},
@@ -25,7 +32,18 @@ const Estilitas = (props) => {
     ]
 
     useEffect(()=>{
-        setStores(estilistas)
+        async function getEstilistas() {
+
+            try {
+                const res = await axios.get(url_data + id, { headers: { "authorization": `Bearer ${Token}` } });
+                console.log("Resultado de servicios: ", res.data.objModel);
+                setStores(res.data.objModel)
+            }
+            catch (error) {
+                actionByError(error, navigation)
+            }
+        }
+        getEstilistas()
     }, [])
 
     return (
@@ -42,8 +60,8 @@ const Estilitas = (props) => {
                                     (stores.length > 0 ? <FlatList
                                         data={stores}
                                         style={{ paddingHorizontal: "7%" }}
-                                        renderItem={({ item }) => <ItemStore {...item} subCategorys={estilistas} />}
-                                        keyExtractor={(item) => item.id.toString()}
+                                        renderItem={({ item }) => <ItemStore {...item} iD_SERVICIO={iD_SERVICIO} />}
+                                        keyExtractor={(item) => item.dni}
                                     /> :
                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                         </View>)

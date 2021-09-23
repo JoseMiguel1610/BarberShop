@@ -22,6 +22,7 @@ import moment from 'moment'
 import 'moment/locale/es'
 import { validateMail } from '../../../utils/validation';
 import { Config } from '../../../configuration/config';
+import ModalSexo from './modal';
 
 const initDateSelect = new Date()
 initDateSelect.setFullYear(2000)
@@ -56,6 +57,11 @@ export default function Register(props) {
         setBirthdate(date.toISOString())
         setModalVisible(false);
     }
+
+    const [modalCurrent, setModalCurrent] = useState(false);
+    const toggleModalCurrent = () => {
+        setModalCurrent(!modalCurrent);
+    };
 
     const url_data = Config.URL_SERVER + "/Account/register"
     const onSummit = async () => {
@@ -303,22 +309,18 @@ export default function Register(props) {
                             setDate={setDate} closeModal={closeModal} selectDate={selectDate} />
 
 
-                        <View style={styles.row} flex={1}>
-                            <View flex={1}>
-                                <Picker
-                                    enabled={true}
-                                    selectedValue={sexo}
-                                    onValueChange={date => setSexo(date)}
-                                    itemStyle={{ fontSize: 20 }}
-                                    style={{ color: "white" }}
-                                >
-                                    <Picker.Item label="Género" value="" color="#a0aec0" />
-                                    <Picker.Item label="Masculino" value={1} color="black" />
-                                    <Picker.Item label="Femenino" value={2} color="black" />
-
-                                </Picker>
-                            </View>
+                        <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent()}>
+                            <TextInput
+                                placeholder='Género'
+                                placeholderTextColor="#7c7878"
+                                keyboardType="default"
+                                value={sexo && sexo == 1 ? "Masculino" : "Femenino"}
+                                editable={false}
+                                style={[styles.input, { color: "#000" }]}
+                            />
                         </View>
+                        <ModalSexo setsexo={setSexo} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
+                    onBackButtonPress={() => setModalCurrent(false)} />
 
                         <View style={styles.containerBtn}>
                             <Pressable style={{ width: "100%" }} android_ripple={{ color: "#fff" }}

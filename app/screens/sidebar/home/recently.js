@@ -1,20 +1,32 @@
 import { useTheme } from '@react-navigation/native'
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
 import CardShop2 from './cardShop2'
 
-const Recently = () => {
+const Recently = (props) => {
+    const { recomendados } = props
     const theme = useTheme()
     return (
         <View style={styles.container}>
             <View style={styles.container_text}>
-                <Text style={[styles.text, { color: theme.dark ? "#fff" : "black"}]}>Destacados...</Text>
+                <Text style={[styles.text, { color: theme.dark ? "#fff" : "black" }]}>Recomendados...</Text>
             </View>
-            <ScrollView horizontal style={{ paddingBottom: 3 }} showsHorizontalScrollIndicator={false}>
-                {
-                    data.map(e => <CardShop2 {...e} key={e.name} />)
-                }
-            </ScrollView>
+            {!!recomendados ? (
+                recomendados.length > 0 ? (
+                    <ScrollView horizontal style={{ paddingBottom: 3 }} showsHorizontalScrollIndicator={false}>
+                        {recomendados.map(e => <CardShop2 {...e} key={e.iD_SERVICIO} />)}
+                    </ScrollView>
+                ) : (
+                    <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>
+                        
+                    </View>
+                )
+            ) : (
+                <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>
+                    <ActivityIndicator size='large' color='#fc9610' />
+                </View>
+            )
+            }
         </View>
     )
 }

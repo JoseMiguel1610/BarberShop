@@ -7,11 +7,14 @@ import Options from './components/options'
 import { useSelector } from 'react-redux'
 import SpinnerModal from '../../../utils/components/spinnerModal'
 import MapShops from './components/mapShops'
+import axios from 'axios'
+import { Config } from '../../../configuration/config'
+import { actionByError } from '../../../utils/actionServerResponse'
 
 const Shops = (props) => {
     const { navigation, route: { params } } = props
-    const {nameCategory} = params
-    console.log("Propiedades:", nameCategory);
+    const {nameCategory, id} = params
+    console.log("Propiedades:", id);
     const [selectOption, setSelectOption] = useState(0)
     const [stores, setStores] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -19,20 +22,29 @@ const Shops = (props) => {
     const [storeSearch, setStoreSearch] = useState([])
     const [searchEnabled, setSearchEnabled] = useState(false)
     const [focus, setFocus] = useState(true)
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    const url_data = Config.URL_SERVER + "/Categorias/servicios/"
+    console.log(Token);
 
     const subCategorys = [
         {id: 1, name: "asdf", iconUrl: "https://conceptodefinicion.de/wp-content/uploads/2014/05/Imagen-2.jpg"},
         {id: 2, name: "asdfgh", iconUrl: "https://conceptodefinicion.de/wp-content/uploads/2014/05/Imagen-2.jpg"}
     ]
 
-    const fullStores = [
-        {id: 1, nameStore: "Pepito", nameSubcategory: "fade"},
-        {id: 2, nameStore: "Pepito", nameSubcategory: "fade"},
-        {id: 3 ,nameStore: "Pepito", nameSubcategory: "fade"},
-    ]
+    useEffect(() => {
+        console.log("SErvicooooos");
+        async function getServicios() {
 
-    useEffect(()=>{
-        setStores(fullStores)
+            try {
+                const res = await axios.get(url_data + id, { headers: { "authorization": `Bearer ${Token}` } });
+                console.log("Resultado de servicios: ", res.data.objModel);
+                setStores(res.data.objModel)
+            }
+            catch (error) {
+                actionByError(error, navigation)
+            }
+        }
+        getServicios()
     }, [])
 
     return (
@@ -50,8 +62,8 @@ const Shops = (props) => {
                                     (stores.length > 0 ? <FlatList
                                         data={stores}
                                         style={{ paddingHorizontal: "5%" }}
-                                        renderItem={({ item }) => <ItemStore {...item} subCategorys={subCategorys} />}
-                                        keyExtractor={(item) => item.id.toString()}
+                                        renderItem={({ item }) => <ItemStore {...item} subCategorys={subCategorys} id={id} />}
+                                        keyExtractor={(item) => item.iD_SERVICIO.toString()}
                                     /> :
                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                         </View>)
@@ -70,7 +82,7 @@ const Shops = (props) => {
                         <FlatList
                             data={storeSearch}
                             style={{ paddingHorizontal: 0 , }}
-                            renderItem={({ item }) => <ItemStore {...item} subCategorys={subCategorys} />}
+                            renderItem={({ item }) => <ItemStore {...item} />}
                             keyExtractor={(item) => item.id.toString()}
                         />
                     </>

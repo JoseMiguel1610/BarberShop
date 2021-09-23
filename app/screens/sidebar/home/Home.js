@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, ImageBackground, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, Pressable, ImageBackground, StyleSheet, TextInput, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Row_simple from '../../../utils/components/row_simple'
@@ -11,18 +11,54 @@ import Banner from './banner';
 import { ScrollView } from 'react-native-gesture-handler';
 import CardSubcategory from './cardSubcategory';
 import Recently from './recently';
+import { actionByError } from '../../../utils/actionServerResponse';
+import axios from 'axios';
+import { Config } from '../../../configuration/config';
 
 export default function Home(props) {
     const navigation = useNavigation()
     const dispatch = useDispatch();
     console.log("nadaa");
     const [name, setName] = useState('')
+    const [categories, setcategories] = useState(null)
+    const [recomendados, setrecomendados] = useState(null)
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    const { dni } = User
+    const url_data = Config.URL_SERVER + "/Categorias"
+    const url_data2 = Config.URL_SERVER + "/Citas"
+    console.log(Token);
+    useEffect(() => {
+        async function getCategorias() {
+            try {
+                const res = await axios.get(url_data, { headers: { "authorization": `Bearer ${Token}` } });
+                setcategories(res.data.objModel)
+            }
+            catch (error) {
+                actionByError(error, navigation)
+            }
+        }
+        getCategorias()
+    }, [])
 
+    useEffect(() =>{
+        getRecomendados()
+    })
+
+    async function getRecomendados() {
+        try {
+            const res = await axios.get(url_data2 + "/" + dni, { headers: { "authorization": `Bearer ${Token}` } });
+            setrecomendados(res.data.objModel)
+        }
+        catch (error) {
+        }
+    }
+
+    console.log(categories);
 
     return (
         <>
             <ScrollView style={styles.scrollView} >
-                <Banner/>
+                <Banner />
                 <View style={styles.container_categories}>
                     {!!categories ? (
                         categories.length > 0 ? (
@@ -30,8 +66,8 @@ export default function Home(props) {
                                 {categories.map((data, ind) => ind < 8 && <CardSubcategory style={styles.img} key={ind} {...data} navigation={navigation} />)}
                             </>
                         ) : (
-                            <View style={{ width: "100%", height: 226, justifyContent: "center", alignItems: "center" }}>
-                                <Text>No hay nada</Text>
+                            <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>
+                                <ActivityIndicator size='large' color='#fc9610' />
                             </View>
                         )
                     ) : (
@@ -40,20 +76,11 @@ export default function Home(props) {
                         </View>
                     )}
                 </View>
-                <Recently/>
+                <Recently recomendados={recomendados} />
             </ScrollView>
         </>
     );
 }
-
-const categories = [
-    {name: "Cortes"},
-    {name: "Barba"},
-    {name: "Mascarillas"},
-    {name: "Masajes"},
-    {name: "Peinado"},
-    {name: "Tintes"}
-]
 
 const styles = StyleSheet.create({
     containerhead: {

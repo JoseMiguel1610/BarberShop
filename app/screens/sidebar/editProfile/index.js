@@ -4,7 +4,9 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from './components/header';
 import { Picker } from '@react-native-community/picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import DateInputComp from './components/dateInputComp';
+import Modal from "react-native-modal"
 import Axios from 'axios';
 import moment from 'moment'
 import 'moment/locale/es'
@@ -15,6 +17,7 @@ import BtnForm1 from '../../../utils/components/btnForm1';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Config } from '../../../configuration/config';
 import { actionByError } from '../../../utils/actionServerResponse';
+import ModalSexo from './components/modal';
 
 const EditProfile = ({ navigation }) => {
     const [formData, setFormData] = useState(formDataInit)
@@ -48,6 +51,11 @@ const EditProfile = ({ navigation }) => {
         date && setBirthdate(date)
         setModalVisible(false);
     }
+
+    const [modalCurrent, setModalCurrent] = useState(false);
+    const toggleModalCurrent = () => {
+        setModalCurrent(!modalCurrent);
+    };
     //End code Modal+InputDate
     useEffect(() => {
         async function getUser() {
@@ -55,7 +63,7 @@ const EditProfile = ({ navigation }) => {
             try {
                 const res = await Axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
                 const userData = res.data.objModel[0]
-                if(res.data.objModel.length > 0){
+                if (res.data.objModel.length > 0) {
                     setDni(userData.dni)
                     setEmail(userData.correo)
                     setName(userData.nombre)
@@ -67,13 +75,13 @@ const EditProfile = ({ navigation }) => {
                     setLoading1(false)
                 }
             }
-            catch(error){
+            catch (error) {
                 setLoading1(false)
                 actionByError(error, navigation)
             }
-            
-            
-            
+
+
+
         }
         getUser()
     }, [])
@@ -231,22 +239,18 @@ const EditProfile = ({ navigation }) => {
                     setDate={setDate} closeModal={closeModal} selectDate={selectDate} />}
 
                 <Text style={styles.label}>Género</Text>
-                <View style={styles.row} flex={1}>
-                    <View flex={1}>
-                        <Picker
-                            enabled={true}
-                            selectedValue={sexo}
-                            onValueChange={date => setSexo(date)}
-                            itemStyle={{ fontSize: 20, fontFamily: "Metropolis-Bold" }}
-                            style={{ color: "#000" }}
-                        >
-                            <Picker.Item label="Género" value="" color="#a0aec0" />
-                            <Picker.Item label="Masculino" value={1} color="#000"/>
-                            <Picker.Item label="Femenino" value={2} color="#000" />
-
-                        </Picker>
-                    </View>
+                <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent()}>
+                    <TextInput
+                        placeholder='Género'
+                        placeholderTextColor="#7c7878"
+                        keyboardType="default"
+                        value={sexo && sexo == 1 ? "Masculino" : "Femenino"}
+                        editable={false}
+                        style={[styles.input, { color: "#000" }]}
+                    />
                 </View>
+                <ModalSexo setsexo={setSexo} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
+                    onBackButtonPress={() => setModalCurrent(false)} />
                 <Text style={styles.label}>Contraseña</Text>
                 <View style={styles.container_inputPass}>
                     <TextInput

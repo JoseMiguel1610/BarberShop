@@ -8,6 +8,8 @@ import ModalAllCategoriesComp from './modalAllCat';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native';
+import Colum_simple from '../../../../utils/components/colum_simple';
+import Row_simple from '../../../../utils/components/row_simple';
 
 const Header = ({ nameCategory, subCategorys, indSubcatSelect, indSubcat, stores, storeSearch }) => {
     const [place, selectPlace] = useState("1");
@@ -21,11 +23,27 @@ const Header = ({ nameCategory, subCategorys, indSubcatSelect, indSubcat, stores
     return (
         <>
             <ImageBackground style={styles.container_top} source={require("../../../../../assets/fondo-02.png")} >
-                <Pressable 
-                    onPress={() => navigation.goBack()}>
-                    <Icon name='arrow-left' color={"#b99a55"} size={30} />
-                </Pressable>
-                <Text style={styles.h1}>{nameCategory}</Text>
+            <View style={styles.top}>
+                    <Row_simple jus_cont={'flex-start'} alitems={'space-around'} flex={1}>
+                        <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={1}>
+                            <Pressable android_ripple={{ color: "#3b3b3b" }}
+                                onPress={() => navigation.goBack()}>
+                                <Icon name='arrow-left' color={"#b99a55"} size={30} />
+                            </Pressable>
+                        </Colum_simple>
+                        <Colum_simple jus_cont={'center'} alitems={'center'} flex={1}>
+                            <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <Text style={{ fontSize: 20, color: "#fff" }}>{nameCategory}</Text>
+                            </View>
+                        </Colum_simple>
+                        <Colum_simple jus_cont={'center'} alitems={'flex-end'} flex={1}>
+                            <Image
+                                source={require("../../../../../assets/logobarber.png")} style={{ width: 80, height: 80 }}>
+                            </Image>
+                        </Colum_simple>
+                    </Row_simple>
+
+                </View>
             </ImageBackground>
         </>
     )
@@ -39,6 +57,9 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 10,
         resizeMode: "cover"
+    },
+    top: {
+        height: 100,
     },
     h1: {
         color: "#fff",

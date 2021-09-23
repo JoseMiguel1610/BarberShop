@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Image from 'react-native-image-progress';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from 'react-native-vector-icons/Feather';
@@ -13,8 +12,8 @@ import Colum_simple from '../../../../utils/components/colum_simple';
 
 const ItemStore = (props) => {
     //console.log("props itemSotre:", props)
-    const { nameStore, photoStore, subCategorys, idCategory_subcategory } = props
-    const nameSubcategory = subCategorys.find(e => e.idCategory_subcategory === idCategory_subcategory).name
+    const { dni, apE_PAT, apE_MAT, nombre, iD_SEXO, iD_SERVICIO, nameStore, photoStore, idCategory_subcategory } = props
+    const namecomplete = nombre + " " + apE_PAT + " " + apE_MAT
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const [like, setLike] = useState(false)
@@ -27,7 +26,7 @@ const ItemStore = (props) => {
     return (
         <Pressable style={styles.container} android_ripple={{ color: "#ff9300" }}   onPress={() => {
             console.log("props params:", props)
-            navigation.navigate("Estilistas", props)
+            navigation.navigate("InfoEstilistas", props)
         }}>
         <Cont_card_color marg_top={10} bc={'white'} brad={20} flex={1} elev={5}>
            <Row_simple just_cont={'space-around'}>
@@ -36,8 +35,11 @@ const ItemStore = (props) => {
                 dispatch(setLoadingFullCategories(true))//Esto evita el warning del estado con pérdida de memoria.
                 navigation.navigate("StoresSales/ProductsShop", props)
             }} > */}
-            <Colum_simple flex={1}v>
-              <ImgErr uri={img} style={styles.img} resizeMode="cover" />
+            <Colum_simple flex={1}>
+                {iD_SEXO == 1 &&
+              <Image source={require("../../../../../assets/man.png")} style={styles.img} resizeMode="cover" /> }
+              {iD_SEXO == 2 &&
+              <Image source={require("../../../../../assets/woman.png")} style={styles.img} resizeMode="cover" /> }
             </Colum_simple>
               
             {/* </Pressable> bc={'yellow'}  */}
@@ -46,7 +48,7 @@ const ItemStore = (props) => {
                     <View style={{ justifyContent: "center", width: "100%", flex: 1 }}>
                         <Row_simple>
                         <Colum_simple>
-                          <Text style={styles.title}>{nameStore}</Text>
+                          <Text style={styles.title}>{namecomplete}</Text>
                         {/* <Text style={styles.price}>s/ 5.70</Text> */}
                         <View style={styles.stars}>
                             {[1, 2, 3, 4].map(e => <Icon name='star-sharp' size={20} color="#ff9300" style={styles.icon} key={e} />)}
@@ -94,7 +96,6 @@ const styles = StyleSheet.create({
     img: {
         height: 100,
         width: 100,
-        borderRadius: 20
     },
     right: {
         width: "65%",

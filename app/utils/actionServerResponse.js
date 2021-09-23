@@ -1,8 +1,6 @@
-import { useNavigation } from '@react-navigation/core';
 import { Alert } from 'react-native';
 
-export function actionByError(error) {
-    const navigation = useNavigation()
+export function actionByError(error, navigation) {
     error.response ? console.warn(error.response) : console.warn(error)
     if (error.response) {
         if (error.response.status === 401) {
