@@ -9,5 +9,11 @@ export const optionsImagePicker = {
     maxWidth: 400,
     includeBase64: true
   };
+
+  export const wait = (timeout) => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
   
   

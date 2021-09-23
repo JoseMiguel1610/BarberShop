@@ -65,7 +65,7 @@ export function DrawerContent(props) {
             }
         }
         getUser()
-    })
+    }, [])
 
     const createBackup = async () => {
         try {

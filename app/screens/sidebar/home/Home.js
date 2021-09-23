@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, ImageBackground, StyleSheet, TextInput, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, ImageBackground, StyleSheet, TextInput, Image, ActivityIndicator, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Row_simple from '../../../utils/components/row_simple'
@@ -8,6 +8,7 @@ import Colum_simple from '../../../utils/components/colum_simple';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Col } from 'react-native-table-component';
 import Banner from './banner';
+import { wait } from "../../../utils/others";
 import { ScrollView } from 'react-native-gesture-handler';
 import CardSubcategory from './cardSubcategory';
 import Recently from './recently';
@@ -20,6 +21,7 @@ export default function Home(props) {
     const dispatch = useDispatch();
     console.log("nadaa");
     const [name, setName] = useState('')
+    const [refreshing, setRefreshing] = useState(false);
     const [categories, setcategories] = useState(null)
     const [recomendados, setrecomendados] = useState(null)
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
@@ -27,22 +29,35 @@ export default function Home(props) {
     const url_data = Config.URL_SERVER + "/Categorias"
     const url_data2 = Config.URL_SERVER + "/Citas"
     console.log(Token);
+
+
     useEffect(() => {
-        async function getCategorias() {
-            try {
-                const res = await axios.get(url_data, { headers: { "authorization": `Bearer ${Token}` } });
-                setcategories(res.data.objModel)
-            }
-            catch (error) {
-                actionByError(error, navigation)
-            }
-        }
         getCategorias()
+        getRecomendados()
     }, [])
 
-    useEffect(() =>{
-        getRecomendados()
-    })
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setcategories(null);
+        setrecomendados(null);
+        wait(1000).then(() => {
+            setRefreshing(false);
+        });
+    }, []);
+
+    useEffect(() => {
+        refreshing && getCategorias() && getRecomendados() //dispatch(getCategoriesGroupHome(navigation))
+    }, [refreshing]);
+
+    async function getCategorias() {
+        try {
+            const res = await axios.get(url_data, { headers: { "authorization": `Bearer ${Token}` } });
+            setcategories(res.data.objModel)
+        }
+        catch (error) {
+            actionByError(error, navigation)
+        }
+    }
 
     async function getRecomendados() {
         try {
@@ -57,7 +72,7 @@ export default function Home(props) {
 
     return (
         <>
-            <ScrollView style={styles.scrollView} >
+            <ScrollView style={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <Banner />
                 <View style={styles.container_categories}>
                     {!!categories ? (
