@@ -148,6 +148,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        // release {
+        //     storeFile file('barbershop.keystore')
+        //     storePassword 'Xiomara090294'
+        //     keyAlias 'barbershop'
+        //     keyPassword 'Xiomara090294'
+        // }
     }
     buildTypes {
         debug {
@@ -159,6 +165,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // signingConfig signingConfigs.release
         }
     }
 

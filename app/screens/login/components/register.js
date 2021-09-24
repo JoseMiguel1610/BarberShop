@@ -58,6 +58,8 @@ export default function Register(props) {
         setModalVisible(false);
     }
 
+    console.log("Sexo: ", sexo);
+
     const [modalCurrent, setModalCurrent] = useState(false);
     const toggleModalCurrent = () => {
         setModalCurrent(!modalCurrent);
@@ -312,11 +314,11 @@ export default function Register(props) {
                         <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent()}>
                             <TextInput
                                 placeholder='Género'
-                                placeholderTextColor="#7c7878"
+                                placeholderTextColor="#fff"
                                 keyboardType="default"
-                                value={sexo && sexo == 1 ? "Masculino" : "Femenino"}
+                                value={sexo ? sexo == 1 ? "Masculino" : "Femenino" : ""}
                                 editable={false}
-                                style={[styles.input, { color: "#000" }]}
+                                style={[styles.input, { color: "#fff" }]}
                             />
                         </View>
                         <ModalSexo setsexo={setSexo} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
