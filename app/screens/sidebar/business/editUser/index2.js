@@ -10,16 +10,20 @@ import Modal from "react-native-modal"
 import Axios from 'axios';
 import moment from 'moment'
 import 'moment/locale/es'
-import SpinnerModal from '../../../utils/components/spinnerModal';
-import { GetDataLogin, SaveUser } from '../../../actions/loginActions';
-import { storeUserData } from '../../../utils/AsyncStore'
-import BtnForm1 from '../../../utils/components/btnForm1';
+import SpinnerModal from '../../../../utils/components/spinnerModal';
+import { GetDataLogin, SaveUser } from '../../../../actions/loginActions';
+import { storeUserData } from '../../../../utils/AsyncStore'
+import BtnForm1 from '../../../../utils/components/btnForm1';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Config } from '../../../configuration/config';
-import { actionByError } from '../../../utils/actionServerResponse';
+import { Config } from '../../../../configuration/config';
+import { actionByError } from '../../../../utils/actionServerResponse';
 import ModalSexo from './components/modal';
+import ModalRol from './components/modalRol';
+import ModalCategoria from './components/modalCategoria';
 
-const EditProfile = ({ navigation }) => {
+const EditProfileAdmin = (props) => {
+    const { navigation, route: { params: { props: user } } } = props
+    console.log("EditprofileAdmin: ", user);
     const [formData, setFormData] = useState(formDataInit)
     const [loading1, setLoading1] = useState(false)
     const [loading2, setLoading2] = useState(false)
@@ -31,6 +35,10 @@ const EditProfile = ({ navigation }) => {
     const [birthdate, setBirthdate] = useState(null);
     const [lastnameP, setLastNameP] = useState(null);
     const [lastnameM, setLastNameM] = useState(null);
+    const [rol, setrol] = useState(null);
+    const [inforol, setinforol] = useState(null);
+    const [cate, setcate] = useState(null);
+    const [infocate, setinfocate] = useState(null);
     const [sexo, setSexo] = useState(null)
     const [prefix, setPrefix] = useState("+51")
     const dispatch = useDispatch();
@@ -55,13 +63,24 @@ const EditProfile = ({ navigation }) => {
     const toggleModalCurrent = () => {
         setModalCurrent(!modalCurrent);
     };
+
+    const [modalCurrent2, setModalCurrent2] = useState(false);
+    const toggleModalCurrent2 = () => {
+        setModalCurrent2(!modalCurrent2);
+    };
+
+    const [modalCurrent3, setModalCurrent3] = useState(false);
+    const toggleModalCurrent3 = () => {
+        setModalCurrent3(!modalCurrent3);
+    };
     //End code Modal+InputDate
     useEffect(() => {
         async function getUser() {
             setLoading1(true)
             try {
-                const res = await Axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
+                const res = await Axios.get(url_data + "/" + user.dni, { headers: { "authorization": `Bearer ${Token}` } });
                 const userData = res.data.objModel[0]
+                console.log(userData);
                 if (res.data.objModel.length > 0) {
                     setDni(userData.dni)
                     setEmail(userData.correo)
@@ -71,6 +90,8 @@ const EditProfile = ({ navigation }) => {
                     setDate(new Date(userData.fechA_NACIMIENTO))
                     setBirthdate(userData.fechA_NACIMIENTO)
                     setSexo(userData.iD_SEXO)
+                    setinforol(userData.rol)
+                    setrol(userData.iD_ROL)
                     setLoading1(false)
                 }
             }
@@ -84,6 +105,14 @@ const EditProfile = ({ navigation }) => {
         }
         getUser()
     }, [])
+
+    useEffect(() => {
+        if(rol != 4){
+            setcate(null)
+            setinfocate(null)
+        }
+
+    }, [rol])
 
     async function submit() {
         if (!name || !dni || !email || !birthdate || !lastnameP || !lastnameM || !sexo) {
@@ -112,18 +141,19 @@ const EditProfile = ({ navigation }) => {
                 nombre: name,
                 fechA_NACIMIENTO: birthdate,
                 correo: email,
-                contrasena: contrasena,
-                iD_SEXO: sexo
+                iD_SEXO: sexo,
+                iD_ROL: rol,
+                iD_CATE: cate
             }
             console.log(formData);
             try {
-                const res = await Axios.put(url_data, formData, { headers: { "authorization": `Bearer ${Token}` } });
+                const res = await Axios.put(url_data + "/admin", formData, { headers: { "authorization": `Bearer ${Token}` } });
                 console.log(res.data);
                 setLoading2(false)
                 dispatch(GetDataLogin(navigation))
                 Alert.alert(
                     "Mensaje",
-                    "Sus datos fueron actualizados.",
+                    "Los datos fueron actualizados.",
                     [{ text: "Aceptar", style: "default" }]
                 )
             } catch (error) {
@@ -137,7 +167,7 @@ const EditProfile = ({ navigation }) => {
         <ScrollView style={styles.container}>
             <SpinnerModal loading={loading1} text="Cargando datos del usuario" />
             <SpinnerModal loading={loading2} text="Actualizando datos del usuario" />
-            <Header sexo={sexo} setFormData={setFormData} avatarSource={avatarSource} setAvatarSource={setAvatarSource} />
+            <Header name={name} sexo={sexo} setFormData={setFormData} avatarSource={avatarSource} setAvatarSource={setAvatarSource} />
             <View style={styles.content}>
                 <Text style={styles.label}>DNI</Text>
                 <View style={styles.container_input}>
@@ -251,23 +281,37 @@ const EditProfile = ({ navigation }) => {
                 </View>
                 <ModalSexo setsexo={setSexo} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
                     onBackButtonPress={() => setModalCurrent(false)} />
-                <Text style={styles.label}>Contraseña</Text>
-                <View style={styles.container_inputPass}>
+
+                <Text style={styles.label}>Rol</Text>
+                <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent2()}>
                     <TextInput
-                        placeholder='******'
+                        placeholder='Rol'
                         placeholderTextColor="#7c7878"
                         keyboardType="default"
-                        secureTextEntry={showPassword ? false : true}
-                        onChangeText={(e) => setPassword(e)}
-                        style={styles.input}
+                        value={inforol}
+                        editable={false}
+                        style={[styles.input, { color: "#000" }]}
                     />
-                    {
-                        showPassword ? <Icon name='md-eye-off-outline' color="#868686" size={20} style={{ marginRight: 10 }}
-                            onPress={() => setShowPassWord(false)} /> :
-                            <Icon name='ios-eye-outline' color="#868686" size={20} style={{ marginRight: 10 }}
-                                onPress={() => setShowPassWord(true)} />
-                    }
                 </View>
+                <ModalRol setinforol={setinforol} setrol={setrol} isModalVisible={modalCurrent2} toggleModal={toggleModalCurrent2}
+                    onBackButtonPress={() => setModalCurrent2(false)} />
+                {rol == 4 &&
+                    <View>
+                        <Text style={styles.label}>Categoría</Text>
+                        <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent3()}>
+                            <TextInput
+                                placeholder='Categoría'
+                                placeholderTextColor="#7c7878"
+                                keyboardType="default"
+                                value={infocate}
+                                editable={false}
+                                style={[styles.input, { color: "#000" }]}
+                            />
+                        </View>
+                    </View>
+                }
+                <ModalCategoria setinfocate={setinfocate} setcate={setcate} isModalVisible={modalCurrent3} toggleModal={toggleModalCurrent3}
+                    onBackButtonPress={() => setModalCurrent3(false)} />
 
                 {/* <Text style={styles.label}>Sexo</Text>
                 <View style={styles.container_sex}>
@@ -281,7 +325,7 @@ const EditProfile = ({ navigation }) => {
                     </TouchableHighlight>
                 </View> */}
 
-                <BtnForm1 text="Actualizar mis datos" onPress={() => submit()} classContainer={{ marginVertical: 10 }} />
+                <BtnForm1 text="Actualizar datos" onPress={() => submit()} classContainer={{ marginVertical: 10 }} />
 
             </View>
         </ScrollView>
@@ -300,7 +344,7 @@ const formDataInit = {
     idAccountType: null,
     photoUser: ""
 }
-export default EditProfile
+export default EditProfileAdmin
 
 const styles = StyleSheet.create({
     container: {

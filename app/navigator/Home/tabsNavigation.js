@@ -23,7 +23,6 @@ import EditUser from '../../screens/sidebar/business/editUser';
 import axios from 'axios';
 import { actionByError } from '../../utils/actionServerResponse';
 import { Config } from '../../configuration/config';
-import Asd from '../../screens/sidebar/asd';
 
 
 // const Tab = createBottomTabNavigator();
@@ -47,9 +46,7 @@ export default function TabsNavigation({ navigation }) {
         async function getUser() {
             try {
                 const res = await axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
-                console.log("INFOOOO", res.data);
                 const userData = res.data.objModel[0]
-                console.log("UsuarioData: ", userData);
                 if (res.data.objModel.length > 0) {
                     setRol(userData.iD_ROL)
                 }
@@ -59,7 +56,7 @@ export default function TabsNavigation({ navigation }) {
             }
         }
         getUser()
-    },)
+    },[])
 
 
     return (
@@ -90,8 +87,8 @@ export default function TabsNavigation({ navigation }) {
                     tabBarIndicatorStyle: {
                         height: 3,
                         // marginLeft:((Dimensions.get('window').width)/4)-65,
-                        width: rol == 1 || rol == 3 ? ((Dimensions.get('window').width) / 4) : Dimensions.get('window').width /2.5,
-                        marginLeft: 20,
+                        width: rol == 1 || rol == 3 ? ((Dimensions.get('window').width) / 2.5) : Dimensions.get('window').width,
+                        marginLeft: rol == 1 || rol == 3 ? 20 : 0,
                         top: 0,
                     },
                     tabBarIcon: ({ focused, color, size }) => {
@@ -153,9 +150,6 @@ export default function TabsNavigation({ navigation }) {
                 {/* <Tab.Screen name='shop_home4' component={WalletHome} */}
                 <Tab.Screen name='shop_home' component={Home}
 
-                    options={{ title: "" }}></Tab.Screen>
-                {/* borrado pa  q  queden solo 4  */}
-                <Tab.Screen name='shop_home5' component={Asd}
                     options={{ title: "" }}></Tab.Screen>
                     {rol == 1 || rol == 3 ?
                 <Tab.Screen name='shop_home6' component={EditUser}

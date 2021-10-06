@@ -32,11 +32,9 @@ export default function Login(props) {
             )
         } else {
             const formData = { "correo": username, "contrasena": contrasena }
-            console.log(formData);
             try {
                 setLoading(true)
                 const res = await Axios.post(url_data, formData);
-                console.log(res.data);
                 if (res.data.objModel) {
                     let user = res.data.objModel.infouser
                     await storeTokenJWT(res.data.objModel.access_Token)

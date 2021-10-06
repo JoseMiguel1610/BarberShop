@@ -43,65 +43,16 @@ export function DrawerContent(props) {
     const [sexo, setSexo] = useState(null)
     const url_data = Config.URL_SERVER + "/Usuarios"
     const url_data2 = Config.URL_SERVER + "/Backup"
-    console.log("rol", rol);
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
-    console.log("USuario:", User);
-    useEffect(() => {
-        async function getUser() {
-            try {
-                const res = await Axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
-                console.log("INFOOOO", res.data);
-                const userData = res.data.objModel[0]
-                console.log("UsuarioData: ", userData);
-                if (res.data.objModel.length > 0) {
-                    setRol(userData.iD_ROL)
-                    setEmail(userData.correo)
-                    setName(userData.nombre)
-                    setSexo(userData.iD_SEXO)
-                }
-            }
-            catch (error) {
-                actionByError(error, navigation)
-            }
-        }
-        getUser()
-    }, [])
 
-    const createBackup = async () => {
-        try {
-            const res = await Axios.get(url_data2, { headers: { "authorization": `Bearer ${Token}` } });
-            console.log("BAKCUP", res.data);
-            Alert.alert(
-                "Excelente",
-                "El respaldo de información se hizo correctamente.",
-                [
-                    {
-                        text: "Ok",
-                        onPress: () => { }
-                    }
-                ]
-            )
-        }
-        catch (error) {
-            Alert.alert(
-                "Error",
-                "Ocurrió un error al hacer el respaldo de información.",
-                [
-                    {
-                        text: "Ok",
-                        onPress: () => { }
-                    }
-                ]
-            )
-        }
-    }
+    
 
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <Perfil correo={email} nombre={name} sexo={sexo} />
+                        <Perfil correo={User.correo} nombre={User.nombre} sexo={User.iD_SEXO} />
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
@@ -116,16 +67,13 @@ export function DrawerContent(props) {
                             label="Home"
                             onPress={() => { props.navigation.navigate('HomeTabs') }}
                         />
-                        {rol == 5 ? <DrawerItem
+                        <DrawerItem
                             icon={({ color, size }) => (
                                 <Oticons name='checklist' color={color} size={size} />
                             )}
                             label="Historial de Citas"
-                            onPress={() => { }}
+                            onPress={() => { props.navigation.navigate('HistorialCitas') }}
                         />
-                            :
-                            null
-                        }
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <IconMaterialC
@@ -137,7 +85,7 @@ export function DrawerContent(props) {
                             label="Perfil"
                             onPress={() => { props.navigation.navigate('Profile') }}
                         />
-                        {rol == 1 || rol == 3 ? <DrawerItem
+                        {User.iD_ROL == 1 || User.iD_ROL == 3 ? <DrawerItem
                             icon={({ color, size }) => (
                                 <AntDesign
                                     name="lock"
@@ -146,7 +94,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Respaldo de Información"
-                            onPress={() => { createBackup() }}
+                            onPress={() => { props.navigation.navigate('Backup') }}
                         />
                             :
                             null

@@ -55,7 +55,7 @@ function EditUser() {
 
     useEffect(() =>{
         get_list_allcontact()
-    },[list_allcontact])
+    },)
 
     async function get_list_allcontact() {
         //http://45.66.156.160:99/api/Wallets/getUsersByTransactions/9
@@ -92,6 +92,11 @@ function EditUser() {
             }
         }
         ChangeAdress()
+        if(email_for_send != ""){
+            setlist_allcontact([])
+        }else{
+            get_list_allcontact()
+        }
     }, [email_for_send])
 
     return (
@@ -100,7 +105,7 @@ function EditUser() {
         >
             <SpinnerModal loading={spiner_contactosf} text="Cargando Contactos " />
 
-            <View style={{ paddingHorizontal: 20, marginBottom: 150 }}>
+            <View style={{ paddingHorizontal: 20,  }}>
                 <Row_simple>
                     <Text style={[styles.hello, {color: theme.dark ? "#fff" : "black"}]}>Usuarios</Text>
                     {/* {sexo == 1 && */}
@@ -162,8 +167,8 @@ function EditUser() {
                                 return (
 
 
-                                    <TouchableHighlight style={{ paddingBottom: 20, }} key={i} key={a.id} activeOpacity={0.65} underlayColor="transparent" onPress={() => {
-
+                                    <TouchableHighlight style={{ paddingBottom: 20, }} key={i} activeOpacity={0.65} underlayColor="transparent" onPress={() => {
+                                        navigation.navigate("ProfileAdmin", { props: a })
                                     }}>
 
                                         <View >
@@ -248,8 +253,8 @@ function EditUser() {
                                     return (
 
 
-                                        <TouchableHighlight style={{ paddingBottom: 20, }} key={i} key={a.id} activeOpacity={0.65} underlayColor="transparent" onPress={() => {
-
+                                        <TouchableHighlight style={{ paddingBottom: 20, }} key={i} activeOpacity={0.65} underlayColor="transparent" onPress={() => {
+                                            navigation.navigate("ProfileAdmin", { props: a})
                                         }}>
 
                                             <View >

@@ -18,15 +18,11 @@ const Routes_init = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const LoginState = useSelector(reducers => reducers.loginReducer).Login;
-    console.log('que hay:', LoginState);
     useEffect(() => {
         async function getList() {
             const jwt = await getJWT()
-            console.log("JWT", jwt);
             const user = await getUserData()
-            console.log("usuario?:", user)
             if (jwt) {
-                console.log("Entra?");
                 dispatch(SaveToken(jwt))
                 dispatch(SaveUser(user))
                 /* const stores = await getStoresByUserAdmin() //esta parte lo hago en navigator/SideBarStack.jsx

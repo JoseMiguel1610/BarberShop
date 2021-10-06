@@ -7,11 +7,11 @@ import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Avatar } from 'react-native-paper'
 import { useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
-import { optionsImagePicker } from '../../../../utils/others';
-import { Colors } from '../../../../styles/colors';
+import { optionsImagePicker } from '../../../../../utils/others';
+import { Colors } from '../../../../../styles/colors';
 
 
-const Header = ({ sexo, setFormData, avatarSource, setAvatarSource }) => {
+const Header = ({ name, sexo, setFormData, avatarSource, setAvatarSource }) => {
     //const [avatarSource, setAvatarSource] = useState(null)
     const navigation = useNavigation()
     const User = useSelector(reducers => reducers.loginReducer).User;
@@ -46,19 +46,19 @@ const Header = ({ sexo, setFormData, avatarSource, setAvatarSource }) => {
             </Pressable>
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <View>
-                    <Text style={styles.h1}>Mi perfil</Text>
-                    <Text style={styles.text1}>Actualiza tus datos personales.</Text>
+                    <Text style={styles.h1}>Perfil de {name}</Text>
+                    <Text style={styles.text1}>Actualiza sus datos personales.</Text>
                 </View>
                 <View style={{ overflow: "hidden" }}>
                     <Pressable style={{ position: "relative" }} onPress={() => { }}>
                         {sexo == 1 &&
                             <Avatar.Image
-                                source={require('../../../../../assets/man.png')}
+                                source={require('../../../../../../assets/man.png')}
                                 size={100}
                             />}
                         {sexo == 2 &&
                             <Avatar.Image
-                                source={require('../../../../../assets/woman.png')}
+                                source={require('../../../../../../assets/woman.png')}
                                 size={100}
                             />}
                     </Pressable>

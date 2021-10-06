@@ -20,6 +20,10 @@ import {
     DarkTheme as PaperDarkTheme
 } from 'react-native-paper';
 import { AuthContext } from './DrawerContent/context';
+import Out_of_service from '../utils/modals/Out_of_service';
+import { Config } from '../configuration/config';
+import axios from 'axios';
+import { actionByError } from '../utils/actionServerResponse';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,6 +35,8 @@ export default function SideBarStack(props) {
     const dimensions = useWindowDimensions();
     const isLargeScreen = dimensions.width >= 768;
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+    const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    const url_data = Config.URL_SERVER + "/Citas/usuario"
     const CustomDefaultTheme = {
         ...NavigationDefaultTheme,
         ...PaperDefaultTheme,
@@ -59,6 +65,32 @@ export default function SideBarStack(props) {
         }
     }), []);
 
+    useEffect(() => {
+        async function getCitasUsuario() {
+            try {
+                const res = await axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
+                const userData = res.data.objModel
+                console.log("CitasUsuario:", userData);
+                if(userData.length > 0){
+                    userData.map((a, i) => {
+
+                        if(a.estado == 1){
+                            console.log("entre");
+                            setvis_out_of_serv(true)
+                        }else{
+                            setvis_out_of_serv(false)
+                        }
+                    })
+                    
+                }
+            }
+            catch (error) {
+                actionByError(error, navigation)
+            }
+        }
+        getCitasUsuario()
+    }, [])
+
     function titleHome() {
         return (
             <View style={{ justifyContent: "center" }}>
@@ -67,8 +99,14 @@ export default function SideBarStack(props) {
         )
     }
 
+    const [vis_out_of_serv, setvis_out_of_serv] = useState(false);
+    const toggleOut_of_serv = () => {
+        // setModalLoadingOrder(bol_loaderst => !bol_loaderst);
+    };
+
     return (
         <>
+        <Out_of_service isModalVisible={vis_out_of_serv} toggleModal={toggleOut_of_serv} setvis_out_of_serv={setvis_out_of_serv} />
             <PaperProvider theme={theme}>
                 <AuthContext.Provider value={authContext}>
                     <NavigationContainer theme={theme} independent={true}>

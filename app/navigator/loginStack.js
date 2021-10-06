@@ -8,9 +8,6 @@ import ForgetPassword from '../screens/login/components/forgetpassword';
 const Stack = createStackNavigator();
 export default function LoginStack() {
 
-    const { register, recovery } = useSelector(reducers => reducers.loginReducer).persistentData;
-    //console.log("RegisterData stack:", RegisterData)
-
     return (
         
         

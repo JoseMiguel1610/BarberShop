@@ -7,6 +7,9 @@ import Shops from '../../screens/sidebar/products';
 import Estilitas from '../../screens/sidebar/products/estilistas';
 import InfoEstilista from '../../screens/sidebar/products/estilistas/info';
 import Citas from '../../screens/sidebar/citas';
+import EditProfileAdmin from '../../screens/sidebar/business/editUser/index2';
+import Backup from '../../screens/sidebar/business/backup';
+import HistorialCitas from '../../screens/sidebar/historial';
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
@@ -18,6 +21,9 @@ const HomeStack = () => {
             <Stack.Screen name='Estilistas' options={{ headerShown: false }} component={Estilitas} />
             <Stack.Screen name='InfoEstilistas' options={{ headerShown: false }} component={InfoEstilista} />
             <Stack.Screen name='Citas' options={{ headerShown: false }} component={Citas} />
+            <Stack.Screen name='HistorialCitas' options={{ headerShown: false }} component={HistorialCitas} />
+            <Stack.Screen name='ProfileAdmin' options={{ headerShown: false }} component={EditProfileAdmin} />
+            <Stack.Screen name='Backup' options={{ headerShown: false }} component={Backup} />
         </Stack.Navigator>
     )
 }
