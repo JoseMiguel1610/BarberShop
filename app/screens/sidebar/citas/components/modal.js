@@ -8,22 +8,55 @@ import { Pressable } from 'react-native';
 import 'moment/locale/es'
 import CardSexo from './cardHorario';
 
-function ModalHorario({ isModalVisible, setHora, toggleModal, onBackButtonPress,
+function ModalHorario({ isModalVisible, data, data2, setHora, toggleModal, onBackButtonPress,
     toggleModalPickUp, type, minEstOrden, maxEstOrden }) {
     const navigation = useNavigation()
     const kdriverEstimate = 0 // 1 hora
-
+    console.log(data2);
+    const [data3, setdata3] = useState([])
+    const [data1, setdata1] = useState([])
+    console.log(data3);
     const items = [
-        { id: 1, name: "11:00" },
-        { id: 2, name: "12:00" },
-        { id: 3, name: "14:00" },
-        { id: 4, name: "15:00" },
-        { id: 5, name: "16:00" },
-        { id: 6, name: "17:00" },
-        { id: 7, name: "18:00" },
-        { id: 8, name: "19:00" },
-        { id: 9, name: "20:00" },
+        { id: 1, name: "11:00", available: true },
+        { id: 2, name: "12:00", available: true },
+        { id: 3, name: "14:00", available: true },
+        { id: 4, name: "15:00", available: true },
+        { id: 5, name: "16:00", available: true },
+        { id: 6, name: "17:00", available: true },
+        { id: 7, name: "18:00", available: true },
+        { id: 8, name: "19:00", available: true },
+        { id: 9, name: "20:00", available: true },
     ]
+
+    useEffect(() => {
+        if (data2.length > 0) {
+            console.log("hay");
+            setdata3(data2)
+        }
+        else {
+            console.log("no hay");
+            setdata3(items)
+        }
+    }, [data, data2])
+
+    useEffect(() => {
+        if (data3.length > 0) {
+            comparar()
+        }
+    }, [data3])
+
+    function comparar() {
+        let copyitems = [...data3]
+        for (var i = 0; i < copyitems.length; i++) {
+            for (var j = 0; j < data.length; j++) {
+                if (copyitems[i].name == data[j].name)
+                    copyitems[i].available = false
+            }
+        }
+        setdata1(copyitems)
+        console.log("data? :", copyitems);
+    }
+
 
 
     return (
@@ -41,7 +74,7 @@ function ModalHorario({ isModalVisible, setHora, toggleModal, onBackButtonPress,
                 <View style={textos.separator_trans}></View>
                 <View style={textos.separator_trans}></View>
                 <FlatList
-                    data={items}
+                    data={data1}
                     renderItem={({ item }) => <CardSexo setHora={setHora} toggleModal={toggleModal} data={item} />}
                     keyExtractor={(item) => item.id.toString()}
                     persistentScrollbar={true}

@@ -15,6 +15,7 @@ import Recently from './recently';
 import { actionByError } from '../../../utils/actionServerResponse';
 import axios from 'axios';
 import { Config } from '../../../configuration/config';
+import Recently2 from './recently2';
 
 export default function Home(props) {
     const navigation = useNavigation()
@@ -92,6 +93,7 @@ export default function Home(props) {
                     )}
                 </View>
                 <Recently recomendados={recomendados} />
+                <Recently2 recomendados={recomendados} />
             </ScrollView>
         </>
     );

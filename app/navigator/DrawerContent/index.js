@@ -20,6 +20,7 @@ import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import IconMaterialC from 'react-native-vector-icons/MaterialCommunityIcons';
 import Oticons from 'react-native-vector-icons/Octicons'
 import AntDesign from "react-native-vector-icons/AntDesign"
+import FontAwe5 from "react-native-vector-icons/FontAwesome5"
 import { Colors } from '../../styles/colors';
 import Perfil from './perfil';
 import Axios from 'axios';
@@ -45,7 +46,7 @@ export function DrawerContent(props) {
     const url_data2 = Config.URL_SERVER + "/Backup"
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
 
-    
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -110,6 +111,32 @@ export function DrawerContent(props) {
                             </View>
                         </TouchableRipple>
                     </Drawer.Section>
+                    {User.iD_ROL == 1 || User.iD_ROL == 3 || User.iD_ROL == 4 ? <Drawer.Section title={User.iD_ROL == 1 || User.iD_ROL == 3 ? "Negocio" : User.iD_ROL == 4 ? "Trabajo" : null}>
+                        {User.iD_ROL == 1 || User.iD_ROL == 3 ? <DrawerItem
+                            icon={({ color, size }) => (
+                                <FontAwe5
+                                    name="clipboard-list"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Estilistas"
+                            onPress={() => { props.navigation.navigate('ListWorkers') }}
+                        />
+                            :
+                            null
+                        }
+                        {User.iD_ROL == 4 && <DrawerItem
+                            icon={({ color, size }) => (
+                                <Oticons name='checklist' color={color} size={size} />
+                            )}
+                            label="Citas"
+                            onPress={() => { props.navigation.navigate('HistorialCitasEstilista') }}
+                        />}
+                    </Drawer.Section>
+                        :
+                        null
+                    }
                 </View>
             </DrawerContentScrollView>
             <Drawer.Section style={styles.bottomDrawerSection}>

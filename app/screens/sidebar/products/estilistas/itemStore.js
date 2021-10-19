@@ -12,7 +12,7 @@ import Colum_simple from '../../../../utils/components/colum_simple';
 
 const ItemStore = (props) => {
     //console.log("props itemSotre:", props)
-    const { dni, apE_PAT, apE_MAT, nombre, iD_SEXO, iD_SERVICIO, nameStore, photoStore, idCategory_subcategory } = props
+    const { dni, apE_PAT, apE_MAT, nombre, iD_SEXO, iD_SERVICIO, nameStore, photoStore, idCategory_subcategory, precio } = props
     const namecomplete = nombre + " " + apE_PAT + " " + apE_MAT
     const navigation = useNavigation()
     const dispatch = useDispatch()

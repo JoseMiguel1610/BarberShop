@@ -18,11 +18,11 @@ const CardHorario = (props) => {
         setHora(data.name)
     }
     return (
-        <Pressable flex={1} style={styles.container} onPress={() => Select()} android_ripple={{ color: "#ff3d2a" }}>
+        <Pressable flex={1} style={styles.container} onPress={() => data.available == true && Select()} android_ripple={{ color: data.available == true ?  "#ff3d2a" : "transparent" }}>
                 <Row_simple flex={1} jus_cont={'flex-start'}>
                     <Row_simple flex={1}>
                         <Colum_simple jus_cont={'center'}>
-                            <Text style={[textos.tit_det], { fontFamily: "Poppins-Bold", color: "black", fontSize: 16 }} >{data.name}</Text>
+                            <Text style={[textos.tit_det], { fontFamily: "Poppins-Bold", color: data.available == true ? "black" : "#96989A", fontSize: 16 }} >{data.name}</Text>
                         </Colum_simple>
                     </Row_simple>
                 </Row_simple>

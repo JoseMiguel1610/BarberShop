@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, ActivityIndicator, StyleSheet, Text, View, Image } from 'react-native'
 import Header from './components/header'
 import ItemStore from './components/itemStore'
-import Options from './components/options'
 import { useSelector } from 'react-redux'
 import SpinnerModal from '../../../utils/components/spinnerModal'
 import MapShops from './components/mapShops'
@@ -14,7 +13,7 @@ import { actionByError } from '../../../utils/actionServerResponse'
 const Shops = (props) => {
     const { navigation, route: { params } } = props
     const {nameCategory, id} = params
-    console.log("Propiedades:", id);
+    console.log("Propiedades:", params);
     const [selectOption, setSelectOption] = useState(0)
     const [stores, setStores] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -78,13 +77,6 @@ const Shops = (props) => {
                 </>
                     :
                     <>
-                        <Text style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", marginVertical: 10 }}>Búsqueda</Text>
-                        <FlatList
-                            data={storeSearch}
-                            style={{ paddingHorizontal: 0 , }}
-                            renderItem={({ item }) => <ItemStore {...item} />}
-                            keyExtractor={(item) => item.id.toString()}
-                        />
                     </>
                 }
                 {/*   <Image source={require("../../../../../../assets/nohaytiendas.png")}

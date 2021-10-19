@@ -20,6 +20,7 @@ const Row_simple = (props) => {
     const {flex} =props;
     const {z}=props;
     const {top} = props;
+    const {h} = props;
 
 
     return (
@@ -34,6 +35,7 @@ const Row_simple = (props) => {
         marginLeft:mar_l,
         margin: margin,
         width:w,
+        height: h,
         backgroundColor:bc,
         flex:flex,
         zIndex:z,

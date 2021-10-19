@@ -10,6 +10,10 @@ import Citas from '../../screens/sidebar/citas';
 import EditProfileAdmin from '../../screens/sidebar/business/editUser/index2';
 import Backup from '../../screens/sidebar/business/backup';
 import HistorialCitas from '../../screens/sidebar/historial';
+import HistorialCitasEstilista from '../../screens/sidebar/historial/estilistas';
+import ListWorkers from '../../screens/sidebar/business/graficos';
+import Options from '../../screens/sidebar/business/graficos/options';
+import GraficoBarras from '../../screens/sidebar/business/graficos/barras';
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
@@ -22,8 +26,12 @@ const HomeStack = () => {
             <Stack.Screen name='InfoEstilistas' options={{ headerShown: false }} component={InfoEstilista} />
             <Stack.Screen name='Citas' options={{ headerShown: false }} component={Citas} />
             <Stack.Screen name='HistorialCitas' options={{ headerShown: false }} component={HistorialCitas} />
+            <Stack.Screen name='HistorialCitasEstilista' options={{ headerShown: false }} component={HistorialCitasEstilista} />
             <Stack.Screen name='ProfileAdmin' options={{ headerShown: false }} component={EditProfileAdmin} />
             <Stack.Screen name='Backup' options={{ headerShown: false }} component={Backup} />
+            <Stack.Screen name='ListWorkers' options={{ headerShown: false }} component={ListWorkers} />
+            <Stack.Screen name='Options' options={{ headerShown: false }} component={Options} />
+            <Stack.Screen name='GraficoBarras' options={{ headerShown: false }} component={GraficoBarras} />
         </Stack.Navigator>
     )
 }

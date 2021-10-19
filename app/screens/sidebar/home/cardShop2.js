@@ -6,11 +6,11 @@ import LoadingImg from '../../../utils/components/loadingImg';
 import { useNavigation } from '@react-navigation/native';
 
 const CardShop2 = (props) => {
-    const { descripcion, descripcioN_SER, iD_SERVICIO, iD_CATE } = props
+    const { descripcion, descripcioN_SER, iD_SERVICIO, iD_CATE, precio } = props
     const theme = useTheme();
     const navigation = useNavigation()
     const submit = () =>{
-        navigation.navigate("Estilistas", { id : iD_CATE, iD_SERVICIO  })
+        navigation.navigate("Estilistas", { id : iD_CATE, iD_SERVICIO, precio  })
     }
     return (
         <View style={styles.container} onTouchEnd={() => submit()}>

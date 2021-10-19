@@ -15,7 +15,7 @@ function ModalMetodo({ isModalVisible, setMetodo, setIdMetodo, toggleModal, onBa
 
     const items = [
         { id: 1, name: "Efectivo" },
-        { id: 2, name: "Pos" },
+        { id: 2, name: "POS" },
         { id: 3, name: "Yape" },
         { id: 4, name: "Plin" },
     ]

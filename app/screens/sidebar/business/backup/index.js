@@ -118,16 +118,16 @@ function Backup() {
                                 <Row_simple flex={1}>
                                     <Row_simple flex={1} jus_cont={'flex-start'}>
                                         <Colum_simple jus_cont={'center'} tav={'center'} flex={0.8}>
-                                            <Text style={{ color: theme.dark ? "#fff" : "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{i + 1}</Text>
+                                            <Text style={{ color: "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{i + 1}</Text>
                                         </Colum_simple>
                                         <Colum_simple jus_cont={'center'} tav={'center'}>
-                                            <Text style={{ color: theme.dark ? "#fff" : "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{a.ruta}</Text>
+                                            <Text style={{ color: "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{a.ruta}</Text>
 
                                             <Row_simple jus_cont={'flex-start'}>
                                                 {/* {( a.idTransactionType!=3) &&  <Text style={[textos.tit_det],{color:Colors.colorPrimaryVar2}}>{a.idTransactionType} status {a.idStatus} {  get_transaction_type(a.idTransactionType , User.primarysid , a.idSender) } </Text>} */}
 
                                                 {/* tipo de  cobro */}
-                                                {<Text style={[textos.text_det], { color: theme.dark ? "#fff" : "#3b3b3b", fontFamily: "Metropolis-SemiBold" }}> {a.fechA_BKP} </Text>}
+                                                {<Text style={[textos.text_det], { color: "#3b3b3b", fontFamily: "Metropolis-SemiBold" }}> {a.fechA_BKP} </Text>}
 
 
                                             </Row_simple>

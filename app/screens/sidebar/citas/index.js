@@ -15,11 +15,13 @@ import CalendarPicker from 'react-native-calendar-picker';
 import ModalSexo from "./components/modal";
 import ModalMetodo from "./components/modal2";
 import { actionByError } from "../../../utils/actionServerResponse";
+import { ScrollView } from "react-native-gesture-handler";
+import { useTheme } from "@react-navigation/native";
+
 const Citas = (props) => {
     const { route: { params } } = props
-    const { route: route1 } = params
-    const { params: params1 } = route1
-    console.log("Citas", params1);
+    // const { route: route1 } = params
+    // const { params: params1 } = route1
     const navigation = useNavigation()
     const minDate = new Date();
     const [date, setdate] = useState(null)
@@ -27,10 +29,14 @@ const Citas = (props) => {
     const [metodo, setMetodo] = useState(null)
     const [id_metodo, setIdMetodo] = useState(null)
     const [day, setDay] = useState(null)
+    const [dataGet, setdataGet] = useState([])
+    const [data2, setdata2] = useState([])
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
     console.log(Token);
     const { dni: dniUsuario } = User;
-    const { dni: dniEstilista, iD_SERVICIO } = params1
+    const { dni: dniEstilista, iD_SERVICIO, precio } = params
+    console.log("Citaaas", precio);
+    const theme = useTheme();
     console.log("EL NUMERO DE SERVICIO ES: ", iD_SERVICIO);
     // const namecomplete = nombre + " " + apE_PAT + " " + apE_MAT
     const url_data = Config.URL_SERVER + "/Citas"
@@ -45,6 +51,80 @@ const Citas = (props) => {
     };
     const changeDate = (e) => {
         setdate(e.toISOString())
+    }
+
+
+    useEffect(() => {
+        setdataGet([])
+        setHora(null)
+        if (date != null) {
+            const fechaDato = new Date (date)
+            const fecha2 = fechaDato.toLocaleString()
+            const date1 = fecha2.substring(0,10)
+            console.log(date1);
+            const fecha = new Date()
+            const fecha3 = fecha.toLocaleString()
+            const date2 = fecha3.substring(0,10)
+            console.log(date2);
+            if(date1 == date2){
+                getHora()
+            }else{
+                setdata2([]) 
+            }
+            getAvailable()
+            
+        }
+    }, [date])
+    console.log("data2: ", data2);
+
+    async function getHora() {
+        try {
+            const res = await axios.get(url_data + "/validacion/hora", { headers: { "authorization": `Bearer ${Token}` } });
+            console.log("Resultado de horaaa xddd: ", res.data.objModel);
+            let objData = res.data.objModel
+            let objData2 = [...objData]
+            objData2.map((a, i) => {
+                if (a.available == "1") {
+                    a.available = true
+                }
+                else {
+                    a.available = false
+                }
+            })
+            setdata2(objData2)
+            console.log(objData2);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    async function getAvailable() {
+        let objData = []
+        const formData = {
+            fecha: date,
+            dni: dniEstilista
+        }
+        try {
+            const res = await axios.post(url_data + "/available", formData, { headers: { "authorization": `Bearer ${Token}` } });
+            console.log("Resultado de availabilidad xddd: ", res.data.objModel);
+            res.data.objModel.map((a, i) => {
+                objData.push({ name: a.horA_RESERVACION })
+            })
+            console.log(objData);
+            setdataGet(objData)
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    function alerta() {
+        return Alert.alert(
+            "Alerta",
+            "Seleccione primero una fecha.",
+            [{ text: "Aceptar", style: "default" }]
+        )
     }
 
     const submit = async () => {
@@ -112,7 +192,7 @@ const Citas = (props) => {
 
     return (
         <>
-            <View style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1 }}>
                 <ImageBackground style={styles.container_top} source={require("../../../../assets/fondo-02.png")} >
                     <View style={styles.top}>
                         <Row_simple jus_cont={'flex-start'} alitems={'space-around'} flex={1}>
@@ -136,6 +216,10 @@ const Citas = (props) => {
                 </ImageBackground>
                 <View style={styles.container}>
                     <CalendarPicker
+                        textStyle={{
+                            fontFamily: 'Cochin',
+                            color: theme.dark ? "#fff" : "#000",
+                        }}
                         previousTitle="Anterior"
                         nextTitle="Próximo"
                         minDate={minDate}
@@ -146,7 +230,7 @@ const Citas = (props) => {
                     />
                 </View>
                 <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent()}>
+                    <View style={styles.container_input} onTouchEnd={() => date != null ? toggleModalCurrent() : alerta()}>
                         <TextInput
                             placeholder='Horario'
                             placeholderTextColor="#7c7878"
@@ -166,15 +250,25 @@ const Citas = (props) => {
                             style={[styles.input, { color: "#000" }]}
                         />
                     </View>
-                    <ModalSexo setHora={setHora} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
+                    <View style={[styles.container_input, { display: "flex", justifyContent: "center", alignItems: "center" }]}>
+                        <TextInput
+                            placeholder='Precio'
+                            placeholderTextColor="#7c7878"
+                            keyboardType="default"
+                            value={`Precio : S/${precio}.00`}
+                            editable={false}
+                            style={[styles.input, { color: "#7c7878" }]}
+                        />
+                    </View>
+                    <ModalSexo data={dataGet} data2={data2} setHora={setHora} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
                         onBackButtonPress={() => setModalCurrent(false)} />
                     <ModalMetodo setIdMetodo={setIdMetodo} setMetodo={setMetodo} isModalVisible={modalCurrent2} toggleModal={toggleModalCurrent2}
                         onBackButtonPress={() => setModalCurrent2(false)} />
                 </View>
-                <View style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 40 }}>
-                    <BtnForm1 text="Continuar" classContainer={{ width: 190 }} onPress={() => submit()} />
+                <View style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 20 }}>
+                    <BtnForm1 text="Reservar" classContainer={{ width: 190 }} onPress={() => submit()} />
                 </View>
-            </View>
+            </ScrollView>
         </>
     );
 }
@@ -235,7 +329,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     input: {
-        flex: 1,
         color: "#000",
         fontFamily: "Metropolis-Bold"
     },

@@ -13,7 +13,7 @@ import { actionByError } from '../../../../utils/actionServerResponse'
 const Estilitas = (props) => {
     const { navigation, route: { params } } = props
     console.log("params props:", params);
-    const { id, iD_SERVICIO } = params
+    const { id, iD_SERVICIO, precio } = params
     const [selectOption, setSelectOption] = useState(0)
     const [stores, setStores] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -33,13 +33,15 @@ const Estilitas = (props) => {
 
     useEffect(()=>{
         async function getEstilistas() {
-
+            setLoading(true)
             try {
                 const res = await axios.get(url_data + id, { headers: { "authorization": `Bearer ${Token}` } });
                 console.log("Resultado de servicios: ", res.data.objModel);
                 setStores(res.data.objModel)
+                setLoading(false)
             }
             catch (error) {
+                setLoading(false)
                 actionByError(error, navigation)
             }
         }
@@ -60,7 +62,7 @@ const Estilitas = (props) => {
                                     (stores.length > 0 ? <FlatList
                                         data={stores}
                                         style={{ paddingHorizontal: "7%" }}
-                                        renderItem={({ item }) => <ItemStore {...item} iD_SERVICIO={iD_SERVICIO} />}
+                                        renderItem={({ item }) => <ItemStore {...item} iD_SERVICIO={iD_SERVICIO} precio={precio} />}
                                         keyExtractor={(item) => item.dni}
                                     /> :
                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -76,7 +78,7 @@ const Estilitas = (props) => {
                 {/*   <Image source={require("../../../../../../assets/nohaytiendas.png")}
                                     style={{ width: "100%", height: 160 }} resizeMode="contain" /> */}
             </View>
-            <SpinnerModal loading={loading} text="Cargando tiendas" />
+            <SpinnerModal loading={loading} text="Cargando estilistas" />
         </View>
     )
 }

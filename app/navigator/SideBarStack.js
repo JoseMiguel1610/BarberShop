@@ -36,6 +36,7 @@ export default function SideBarStack(props) {
     const isLargeScreen = dimensions.width >= 768;
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+    const [idcita, setidcita ] = useState(null)
     const url_data = Config.URL_SERVER + "/Citas/usuario"
     const CustomDefaultTheme = {
         ...NavigationDefaultTheme,
@@ -72,24 +73,25 @@ export default function SideBarStack(props) {
                 const userData = res.data.objModel
                 console.log("CitasUsuario:", userData);
                 if(userData.length > 0){
+                    let ultimo = null;
                     userData.map((a, i) => {
 
-                        if(a.estado == 1){
-                            console.log("entre");
+                        if(a.estado == 2){
+                            console.log("entre: ", i);
                             setvis_out_of_serv(true)
-                        }else{
-                            setvis_out_of_serv(false)
+                            ultimo = userData[i];
+                            
                         }
                     })
+                    setidcita(ultimo.iD_CITA)
                     
                 }
             }
             catch (error) {
-                actionByError(error, navigation)
             }
         }
         getCitasUsuario()
-    }, [])
+    },)
 
     function titleHome() {
         return (
@@ -106,7 +108,7 @@ export default function SideBarStack(props) {
 
     return (
         <>
-        <Out_of_service isModalVisible={vis_out_of_serv} toggleModal={toggleOut_of_serv} setvis_out_of_serv={setvis_out_of_serv} />
+        <Out_of_service idcita={idcita} isModalVisible={vis_out_of_serv} toggleModal={toggleOut_of_serv} setvis_out_of_serv={setvis_out_of_serv} />
             <PaperProvider theme={theme}>
                 <AuthContext.Provider value={authContext}>
                     <NavigationContainer theme={theme} independent={true}>

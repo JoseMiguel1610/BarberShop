@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native'
 
 
 
-const Cont_card_color = (props) => {  
+const Cont_card_color_pressable = (props) => {  
       const {brad} =  props;
       const {alignSelf} = props;
       const {marg_top} =  props;
@@ -26,6 +26,7 @@ const Cont_card_color = (props) => {
       const {pos}=props
       const {bot} =props
       const {z} =props;
+      const { onTouchEnd } = props;
 
 
     //   const {wid} =  props;
@@ -55,13 +56,13 @@ const Cont_card_color = (props) => {
             position:pos,
             bottom:bot,
             zIndex:z,
-         }]}>            
+         }]} onTouchEnd={onTouchEnd}>            
                 {props.children}
         </View>
     )
 }
 
-export default Cont_card_color
+export default Cont_card_color_pressable
 
 
 const styles = StyleSheet.create({
