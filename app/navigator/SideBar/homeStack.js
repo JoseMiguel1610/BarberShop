@@ -14,6 +14,9 @@ import HistorialCitasEstilista from '../../screens/sidebar/historial/estilistas'
 import ListWorkers from '../../screens/sidebar/business/graficos';
 import Options from '../../screens/sidebar/business/graficos/options';
 import GraficoBarras from '../../screens/sidebar/business/graficos/barras';
+import GraficoTagCloud from '../../screens/sidebar/business/graficos/tagcloud';
+import CitasUpdate from '../../screens/sidebar/historial/components/updateCita';
+import Shops2 from '../../screens/sidebar/products/index2';
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
@@ -22,6 +25,7 @@ const HomeStack = () => {
             <Stack.Screen name='HomeTabs' component={TabsNavigation} options={{ headerShown: false }} />
             <Stack.Screen name='Profile' options={{ headerShown: false }} component={EditProfile} />
             <Stack.Screen name='Servicios' options={{ headerShown: false }} component={Shops} />
+            <Stack.Screen name='Servicios2' options={{ headerShown: false }} component={Shops2} />
             <Stack.Screen name='Estilistas' options={{ headerShown: false }} component={Estilitas} />
             <Stack.Screen name='InfoEstilistas' options={{ headerShown: false }} component={InfoEstilista} />
             <Stack.Screen name='Citas' options={{ headerShown: false }} component={Citas} />
@@ -32,6 +36,8 @@ const HomeStack = () => {
             <Stack.Screen name='ListWorkers' options={{ headerShown: false }} component={ListWorkers} />
             <Stack.Screen name='Options' options={{ headerShown: false }} component={Options} />
             <Stack.Screen name='GraficoBarras' options={{ headerShown: false }} component={GraficoBarras} />
+            <Stack.Screen name='GraficoTagCloud' options={{ headerShown: false }} component={GraficoTagCloud} />
+            <Stack.Screen name='CitasUpdate' options={{ headerShown: false }} component={CitasUpdate} />
         </Stack.Navigator>
     )
 }

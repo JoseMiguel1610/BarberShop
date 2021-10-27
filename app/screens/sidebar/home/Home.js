@@ -25,6 +25,7 @@ export default function Home(props) {
     const [refreshing, setRefreshing] = useState(false);
     const [categories, setcategories] = useState(null)
     const [recomendados, setrecomendados] = useState(null)
+    const [recomendados2, setrecomendados2] = useState(null)
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
     const { dni } = User
     const url_data = Config.URL_SERVER + "/Categorias"
@@ -35,6 +36,7 @@ export default function Home(props) {
     useEffect(() => {
         getCategorias()
         getRecomendados()
+        getRecomendados2()
     }, [])
 
     const onRefresh = React.useCallback(() => {
@@ -69,6 +71,15 @@ export default function Home(props) {
         }
     }
 
+    async function getRecomendados2() {
+        try {
+            const res = await axios.get(url_data2 + "/analisis/estilista/" + dni, { headers: { "authorization": `Bearer ${Token}` } });
+            setrecomendados2(res.data.objModel)
+        }
+        catch (error) {
+        }
+    }
+
     console.log(categories);
 
     return (
@@ -93,7 +104,7 @@ export default function Home(props) {
                     )}
                 </View>
                 <Recently recomendados={recomendados} />
-                <Recently2 recomendados={recomendados} />
+                <Recently2 recomendados={recomendados2} />
             </ScrollView>
         </>
     );

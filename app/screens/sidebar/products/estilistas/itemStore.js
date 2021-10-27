@@ -9,10 +9,11 @@ import ImgErr from '../../../../utils/components/ImgErr';
 import Cont_card_color from '../../../../utils/components/cont_card_color';
 import Row_simple from '../../../../utils/components/row_simple';
 import Colum_simple from '../../../../utils/components/colum_simple';
+import { AirbnbRating } from 'react-native-ratings';
 
 const ItemStore = (props) => {
     //console.log("props itemSotre:", props)
-    const { dni, apE_PAT, apE_MAT, nombre, iD_SEXO, iD_SERVICIO, nameStore, photoStore, idCategory_subcategory, precio } = props
+    const { dni, apE_PAT, apE_MAT, nombre, iD_SEXO, promedio, iD_SERVICIO, nameStore, photoStore, idCategory_subcategory, precio } = props
     const namecomplete = nombre + " " + apE_PAT + " " + apE_MAT
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -51,7 +52,7 @@ const ItemStore = (props) => {
                           <Text style={styles.title}>{namecomplete}</Text>
                         {/* <Text style={styles.price}>s/ 5.70</Text> */}
                         <View style={styles.stars}>
-                            {[1, 2, 3, 4].map(e => <Icon name='star-sharp' size={20} color="#ff9300" style={styles.icon} key={e} />)}
+                        <AirbnbRating showRating={false} defaultRating={promedio} size={20} selectedColor={"#ff9300"} isDisabled />
                         </View>
                         </Colum_simple>
                       </Row_simple>

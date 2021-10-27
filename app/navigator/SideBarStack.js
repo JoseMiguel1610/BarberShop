@@ -37,6 +37,8 @@ export default function SideBarStack(props) {
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
     const [idcita, setidcita ] = useState(null)
+    const [ sexo, setsexo] = useState(null)
+    const [name , setname ] = useState(null)
     const url_data = Config.URL_SERVER + "/Citas/usuario"
     const CustomDefaultTheme = {
         ...NavigationDefaultTheme,
@@ -84,6 +86,8 @@ export default function SideBarStack(props) {
                         }
                     })
                     setidcita(ultimo.iD_CITA)
+                    setsexo(ultimo.iD_SEXO)
+                    setname(ultimo.nombrE_ESTILISTA)
                     
                 }
             }
@@ -108,7 +112,7 @@ export default function SideBarStack(props) {
 
     return (
         <>
-        <Out_of_service idcita={idcita} isModalVisible={vis_out_of_serv} toggleModal={toggleOut_of_serv} setvis_out_of_serv={setvis_out_of_serv} />
+        <Out_of_service name={name} sexo={sexo} idcita={idcita} isModalVisible={vis_out_of_serv} toggleModal={toggleOut_of_serv} setvis_out_of_serv={setvis_out_of_serv} />
             <PaperProvider theme={theme}>
                 <AuthContext.Provider value={authContext}>
                     <NavigationContainer theme={theme} independent={true}>

@@ -10,10 +10,10 @@ import Cont_card_color from '../../../../utils/components/cont_card_color';
 import Row_simple from '../../../../utils/components/row_simple';
 import Colum_simple from '../../../../utils/components/colum_simple';
 
-const ItemStore = (props) => {
+const ItemStore2 = (props) => {
     console.log(props);
     //console.log("props itemSotre:", props)
-    const { iD_SERVICIO,  descripcion, precio, photoStore, subCategorys, idCategory_subcategory, id } = props
+    const { iD_SERVICIO, dni, descripcion, precio, photoStore, subCategorys, idCategory_subcategory, id } = props
     const nameSubcategory = subCategorys.find(e => e.idCategory_subcategory === idCategory_subcategory).name
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -27,7 +27,7 @@ const ItemStore = (props) => {
     return (
         <Pressable style={styles.container} android_ripple={{ color: "#ff9300" }}   onPress={() => {
             console.log("props params:", props)
-            navigation.navigate("Estilistas", props)
+            navigation.navigate("Citas", { dni, iD_SERVICIO, precio })
         }}>
         <Cont_card_color marg_top={10} bc={'white'} brad={20} flex={1} elev={5}>
            <Row_simple just_cont={'space-around'}>
@@ -109,7 +109,7 @@ const ItemStore = (props) => {
     )
 }
 
-export default ItemStore
+export default ItemStore2
 
 const styles = StyleSheet.create({
     container: {

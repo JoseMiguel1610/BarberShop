@@ -15,15 +15,15 @@ import { actionByError } from "../actionServerResponse";
 import { useSelector } from "react-redux";
 
 
-const Out_of_service = ({ idcita, isModalVisible, setvis_out_of_serv }) => {
+const Out_of_service = ({ idcita, sexo, name, isModalVisible, setvis_out_of_serv }) => {
     const navigation = useNavigation();
     const [comentario, setcoment] = useState(null)
-    const [rating, setrating ] = useState(0)
+    const [rating, setrating] = useState(0)
     const url_data = Config.URL_SERVER + "/Citas/feedback"
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
 
     async function send() {
-        if( !comentario || !rating ){
+        if (!comentario || !rating) {
             return Alert.alert(
                 "Alerta",
                 "Llene los campos.",
@@ -36,27 +36,27 @@ const Out_of_service = ({ idcita, isModalVisible, setvis_out_of_serv }) => {
             comentario: comentario
         }
         console.log("Formdata: ", formData);
-            try {
-                const res = await axios.post(url_data, formData, { headers: { "authorization": `Bearer ${Token}` } });
-                const resul = res.data.objModel
-                console.log("resfedd:", resul);
-                Alert.alert(
-                    "Excelente",
-                    "Comentarios enviados correctamente.",
-                    [{ text: "Aceptar", onPress: () => { setvis_out_of_serv(false) }, style: "default" }]
-                )
-                setrating(0)
-                setcoment(null)
-                
-                
-            }
-            catch (error) {
-                actionByError(error, navigation)
-                setrating(0)
-                setcoment(null)
-                setvis_out_of_serv(false)
-            }
-        
+        try {
+            const res = await axios.post(url_data, formData, { headers: { "authorization": `Bearer ${Token}` } });
+            const resul = res.data.objModel
+            console.log("resfedd:", resul);
+            Alert.alert(
+                "Excelente",
+                "Comentarios enviados correctamente.",
+                [{ text: "Aceptar", onPress: () => { setvis_out_of_serv(false) }, style: "default" }]
+            )
+            setrating(0)
+            setcoment(null)
+
+
+        }
+        catch (error) {
+            actionByError(error, navigation)
+            setrating(0)
+            setcoment(null)
+            setvis_out_of_serv(false)
+        }
+
     }
 
     const ratingCompleted = (rating) => {
@@ -82,6 +82,13 @@ const Out_of_service = ({ idcita, isModalVisible, setvis_out_of_serv }) => {
                     {/* <ActivityIndicator size='large' color='#77D353' /> */}
                     {/* <Image source={require('../../../../../assets/inicio-08.png')} style={styles.img_icon1} />
                     <Image source={require('../../../../../assets/working.png')} style={styles.img_portada} /> */}
+                    <View style={{display: "flex", justifyContent: "center", alignItems: "center", paddingBottom: 30}}>
+                        {sexo == 1 &&
+                            <Image source={require("../../../assets/man.png")} style={styles.img} resizeMode="cover" />}
+                        {sexo == 2 &&
+                            <Image source={require("../../../assets/woman.png")} style={styles.img} resizeMode="cover" />}
+                            <Text style={[styles.text_h1, { fontSize: 18, marginTop: 10}]}>{name} </Text>
+                    </View>
                     <Text style={styles.text_h1}>Califica tu última atención... </Text>
                     <View style={styles.container_input}>
                         <TextInput
@@ -123,6 +130,10 @@ const styles = StyleSheet.create({
         paddingVertical: 0,
         marginVertical: 0,
         height: "100%",
+    },
+    img: {
+        height: 100,
+        width: 100,
     },
     img_portada: {
         width: null,

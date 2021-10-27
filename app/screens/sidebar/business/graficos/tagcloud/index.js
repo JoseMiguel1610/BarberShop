@@ -21,7 +21,9 @@ import {
     ContributionGraph,
     StackedBarChart
 } from "react-native-chart-kit";
-function GraficoBarras(props) {
+import Cloud from 'react-native-word-cloud';
+import WordCloud from 'triz-react-native-wordcloud';
+function GraficoTagCloud(props) {
     const { route: { params } } = props
     console.log(params);
     const { dni, nombre, apE_PAT, apE_MAT } = params
@@ -32,31 +34,11 @@ function GraficoBarras(props) {
     const theme = useTheme();
     const navigation = useNavigation()
     const [nivel, setNivel] = useState([20, 45, 28, 80, 99, 43])
-    const [fecha, setFecha] = useState([])
+    const [tagList, setTagList] = useState([])
     const screenWidth = Dimensions.get("window").width - 20;
-    const chartConfig = {
-        backgroundGradientFrom: '#eff3ff',
-        backgroundGradientTo: '#efefef',
-        decimalPlaces: 2,
-        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-        style: {
-            borderRadius: 16,
-        },
-    };
-    const fill = 'rgb(134, 65, 244)'
-    const data = {
-        labels: fecha,
-        datasets: [
-            {
-                data: nivel,
-                color: (opacity = 1) => `rgba(246, 17, 17, ${opacity})`, // optional
-                strokeWidth: 5 // optional
-            }
-        ],
-        legend: ["Precio"] // optional
-    };
-    const url_data = Config.URL_SERVER + "/Grafics/barras"
+    const url_data = Config.URL_SERVER + "/Grafics/tagcloud"
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
+
     useEffect(() => {
         async function getGraficos() {
             const formData = {
@@ -66,21 +48,19 @@ function GraficoBarras(props) {
             try {
                 const res = await axios.post(url_data, formData, { headers: { "authorization": `Bearer ${Token}` } });
                 const respuesta = res.data.objModel
-                console.log(res);
+                console.log(respuesta);
                 if (respuesta.length > 0) {
                     var auxNiveles = [];
-                    var auxFechas = [];
                     respuesta.map(elemento => {
-                        auxNiveles.push(elemento.precio)
-                        auxFechas.push(elemento.mes)
+                        auxNiveles.push({ keyword: elemento.comenta, frequency: elemento.contador, color: elemento.color })
                     });
-                    setNivel(auxNiveles);
-                    setFecha(auxFechas);
-                }
-                else {
-                    return Alert.alert(
+                    setTagList(auxNiveles);
+                    setLoading1(false)
+                } else {
+                    setLoading1(false)
+                    Alert.alert(
                         "Aviso",
-                        "El estilista no tiene servicios realizados.",
+                        "El estilista no tiene comentarios.",
                         [
                             {
                                 text: "Ok",
@@ -89,7 +69,7 @@ function GraficoBarras(props) {
                         ]
                     )
                 }
-                setLoading1(false)
+
             }
             catch (error) {
                 setLoading1(false)
@@ -98,20 +78,25 @@ function GraficoBarras(props) {
         }
         getGraficos()
     }, [])
+    const deviceWidth = Dimensions.get('window').width;
+    const colorList = ['red', 'green', 'blue']
+    const minFontSize = 12
+    const style = {
+        width: deviceWidth / 1.2,
+        paddingLeft: 15,
+        paddingRight: 15,
+    }
 
     return (
-        <ScrollView style={styles.containerHead}
-
-        >
-            <SpinnerModal loading={loading} text="Cargando" />
-            <SpinnerModal loading={loading2} text="Generando Backup" />
+        <ScrollView style={styles.containerHead}>
             <View style={styles.container}>
+
                 <Pressable android_ripple={{ color: "#b99a55", radius: 15 }} style={{ width: 30 }}
                     onPress={() => navigation.goBack()}>
                     <Icon name='arrow-left' color={"#b99a55"} size={30} />
                 </Pressable>
                 <Row_simple>
-                    <Text style={[styles.hello, { color: theme.dark ? "#fff" : "black", fontFamily: "Metropolis-Regular" }]}>Gráfico</Text>
+                    <Text style={[styles.hello, { color: theme.dark ? "#fff" : "black" }]}>TagCloud</Text>
                     {/* {sexo == 1 && */}
                     {theme.dark ?
                         <Image
@@ -132,33 +117,20 @@ function GraficoBarras(props) {
 
 
                 </Row_simple>
-                <View style={{
-                    flex: 1,
-                    marginTop: 20
-                }}>
-                    <Text style={{fontFamily: "Metropolis-Regular", marginBottom: 20, textAlign: "left", fontSize: 18, color: theme.dark ? "#fff" : "#3b3b3b" }}>Monto recaudado por mes</Text>
-                    <Text style={{ fontFamily: "Metropolis-Regular", marginBottom: 20, fontSize: 18, color: theme.dark ? "#fff" : "black" }}>{nombrecompleto}</Text>
-                    {
-                        nivel.length > 0 && fecha.length > 0 ?
+                <View style={styles.subcontainer}>
+                    <Text style={{ fontFamily: "Metropolis-Regular", fontSize: 18, color: theme.dark ? "#fff" : "black" }}>{nombrecompleto}</Text>
 
-                            <LineChart
-                                data={data}
-                                width={screenWidth}
-                                height={420}
-                                chartConfig={chartConfig}
-                                verticalLabelRotation={0}
-                                bezier
-                            />
-                            :
-                            null}
+                    <WordCloud
+                        wordList={tagList}
+                        style={{ fontWeight: "bold" }}
+                    />
                 </View>
             </View>
-
         </ScrollView>
     );
 }
 
-export default GraficoBarras;
+export default GraficoTagCloud;
 
 const styles = StyleSheet.create({
     containerHead: {
@@ -167,6 +139,12 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         marginBottom: 20
+    },
+    subcontainer: {
+        marginTop: 100,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
     },
     hello: {
         fontSize: 26,

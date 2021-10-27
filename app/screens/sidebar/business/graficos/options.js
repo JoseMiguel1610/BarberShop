@@ -77,7 +77,7 @@ function Options(props) {
 
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Pressable android_ripple={{ color: "#3b3b3b" }}
+                <Pressable
                     onPress={() => navigation.navigate("GraficoBarras", props1)} style={[styles.acontainer, { borderColor: theme.dark ? "#fff" : "#3b3b3b"}]}>
                     <Row_simple h={120} pad_h={0}>
                         <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center' }}>
@@ -86,8 +86,8 @@ function Options(props) {
 
                     </Row_simple>
                 </Pressable>
-                <Pressable android_ripple={{ color: "#3b3b3b" }}
-                    onPress={() => {}} style={[styles.acontainer, { borderColor: theme.dark ? "#fff" : "#3b3b3b"}]}>
+                <Pressable
+                    onPress={() => navigation.navigate("GraficoTagCloud", props1)} style={[styles.acontainer, { borderColor: theme.dark ? "#fff" : "#3b3b3b"}]}>
                     <Row_simple h={120} pad_h={0}>
                         <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={[styles.txt_center, { color: theme.dark ? '#fff' : "#3b3b3b" }]}>Nube de palabras</Text>

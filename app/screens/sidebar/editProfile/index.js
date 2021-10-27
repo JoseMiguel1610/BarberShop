@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableHighlight, ImageBackground, Alert } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, TouchableHighlight, ImageBackground, Alert, Pressable } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from './components/header';
@@ -224,7 +224,7 @@ const EditProfile = ({ navigation }) => {
                     </View>
                 </View> */}
                 <Text style={styles.label}>Fecha de nacimiento</Text>
-                <View style={styles.container_input} onTouchEnd={() => openModal()}>
+                <Pressable style={styles.container_input} onPress={() => openModal()}>
                     <TextInput
                         placeholder='Fecha de nacimiento'
                         placeholderTextColor="#7c7878"
@@ -234,9 +234,9 @@ const EditProfile = ({ navigation }) => {
                         onChangeText={(e) => setBirthdate(e)}
                         style={[styles.input, { color: "#000" }]}
                     />
-                </View>
-                {date && <DateInputComp isModalVisible={isModalVisible} date={date}
-                    setDate={setDate} closeModal={closeModal} selectDate={selectDate} />}
+                </Pressable>
+                <DateInputComp isModalVisible={isModalVisible} date={date}
+                    setDate={setDate} closeModal={closeModal} selectDate={selectDate} />
 
                 <Text style={styles.label}>Género</Text>
                 <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent()}>

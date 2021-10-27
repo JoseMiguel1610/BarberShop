@@ -6,19 +6,18 @@ import { Picker } from '@react-native-community/picker'
 import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { useSelector } from "react-redux";
-import { Config } from "../../../configuration/config";
-import BtnForm1 from "../../../utils/components/btnForm1";
-import Colum_simple from "../../../utils/components/colum_simple";
-import Cont_card_color from "../../../utils/components/cont_card_color";
-import Row_simple from "../../../utils/components/row_simple";
+import { Config } from "../../../../configuration/config";
+import BtnForm1 from "../../../../utils/components/btnForm1";
+import Colum_simple from "../../../../utils/components/colum_simple";
+import Cont_card_color from "../../../../utils/components/cont_card_color";
+import Row_simple from "../../../../utils/components/row_simple";
 import CalendarPicker from 'react-native-calendar-picker';
-import ModalSexo from "./components/modal";
-import ModalMetodo from "./components/modal2";
-import { actionByError } from "../../../utils/actionServerResponse";
+import { actionByError } from "../../../../utils/actionServerResponse";
 import { ScrollView } from "react-native-gesture-handler";
 import { useTheme } from "@react-navigation/native";
+import ModalHorarioUpdate from "./modalHorario";
 
-const Citas = (props) => {
+const CitasUpdate = (props) => {
     const { route: { params } } = props
     // const { route: route1 } = params
     // const { params: params1 } = route1
@@ -33,12 +32,9 @@ const Citas = (props) => {
     const [data2, setdata2] = useState([])
     const { Token, User } = useSelector((reducers) => reducers.loginReducer);
     console.log(Token);
-    const { dni: dniUsuario } = User;
-    const { dni: dniEstilista, iD_SERVICIO, precio } = params
-    console.log(params);
-    console.log("Citaaas", precio);
+    const { dnI_ESTILISTA, idcita } = params
     const theme = useTheme();
-    console.log("EL NUMERO DE SERVICIO ES: ", iD_SERVICIO);
+    // console.log("EL NUMERO DE SERVICIO ES: ", iD_SERVICIO);
     // const namecomplete = nombre + " " + apE_PAT + " " + apE_MAT
     const url_data = Config.URL_SERVER + "/Citas"
     const startDate = date ? date.toString() : ""
@@ -56,14 +52,6 @@ const Citas = (props) => {
         console.log(e.toISOString());
         setdate(e.toISOString())
     }
-
-    useEffect(() =>{
-        if("18:00" < "16:00"){
-            console.log("es menor");
-        }else{
-            console.log("es mayor");
-        }
-    },[])
 
 
     useEffect(() => {
@@ -117,7 +105,7 @@ const Citas = (props) => {
         let objData = []
         const formData = {
             fecha: date,
-            dni: dniEstilista
+            dni: dnI_ESTILISTA
         }
         console.log(formData);
         try {
@@ -155,33 +143,23 @@ const Citas = (props) => {
                 "Seleccione un horario.",
                 [{ text: "Aceptar", style: "default" }]
             )
-        } else if (!metodo) {
-            return Alert.alert(
-                "Alerta",
-                "Seleccione el método de pago.",
-                [{ text: "Aceptar", style: "default" }]
-            )
         } else {
             const formData = {
-                dni: dniUsuario,
-                dnI2: dniEstilista,
-                fechA_ATENCION: date,
-                horA_RESERVACION: hora,
-                iD_PAGO: id_metodo,
-                iD_SERVICO: iD_SERVICIO
+                id: idcita,
+                fecha: date,
+                hora: hora
             }
-            console.log(formData);
             try {
-                const res = await axios.post(url_data, formData, { headers: { "authorization": `Bearer ${Token}` } });
-                console.log("Resultado de reserva: ", res.data.objModel);
+                const res = await axios.put(url_data + "/modify", formData, { headers: { "authorization": `Bearer ${Token}` } });
+                console.log("Resultado de modificar: ", res.data.objModel);
                 if (res.data.status == 1) {
                     Alert.alert(
                         "Satisfactorio",
-                        "Reserva de cita correcta.",
+                        "Cita modificada correctamente.",
                         [
                             {
                                 text: "Ok",
-                                onPress: () => { navigation.navigate("HomeTabs") }
+                                onPress: () => { navigation.navigate("HistorialCitas") }
                             }
                         ]
                     )
@@ -208,7 +186,7 @@ const Citas = (props) => {
     return (
         <>
             <ScrollView style={{ flex: 1 }}>
-                <ImageBackground style={styles.container_top} source={require("../../../../assets/fondo-02.png")} >
+                <ImageBackground style={styles.container_top} source={require("../../../../../assets/fondo-02.png")} >
                     <View style={styles.top}>
                         <Row_simple jus_cont={'flex-start'} alitems={'center'} flex={1}>
                             <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={0.6}>
@@ -218,11 +196,11 @@ const Citas = (props) => {
                                 </Pressable>
                             </Colum_simple>
                             <Colum_simple jus_cont={'center'} alitems={'flex-start'} >
-                                <Text style={{ fontSize: 20, color: "#fff" }}>Reserva de Cita</Text>
+                                <Text style={{ fontSize: 20, color: "#fff" }}>Modificar Cita</Text>
                             </Colum_simple>
                             <Colum_simple jus_cont={'center'} alitems={'flex-end'} flex={1}>
                                 <Image
-                                    source={require("../../../../assets/logobarber.png")} style={{ width: 80, height: 80 }}>
+                                    source={require("../../../../../assets/logobarber.png")} style={{ width: 80, height: 80 }}>
                                 </Image>
                             </Colum_simple>
                         </Row_simple>
@@ -255,40 +233,18 @@ const Citas = (props) => {
                             style={[styles.input, { color: "#000" }]}
                         />
                     </View>
-                    <View style={styles.container_input} onTouchEnd={() => toggleModalCurrent2()}>
-                        <TextInput
-                            placeholder='Método de Pago'
-                            placeholderTextColor="#7c7878"
-                            keyboardType="default"
-                            value={metodo}
-                            editable={false}
-                            style={[styles.input, { color: "#000" }]}
-                        />
-                    </View>
-                    <View style={[styles.container_input, { display: "flex", justifyContent: "center", alignItems: "center" }]}>
-                        <TextInput
-                            placeholder='Precio'
-                            placeholderTextColor="#7c7878"
-                            keyboardType="default"
-                            value={`Precio : S/${precio}.00`}
-                            editable={false}
-                            style={[styles.input, { color: "#7c7878" }]}
-                        />
-                    </View>
-                    <ModalSexo data={dataGet} data2={data2} setHora={setHora} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
+                    <ModalHorarioUpdate data={dataGet} data2={data2} setHora={setHora} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
                         onBackButtonPress={() => setModalCurrent(false)} />
-                    <ModalMetodo setIdMetodo={setIdMetodo} setMetodo={setMetodo} isModalVisible={modalCurrent2} toggleModal={toggleModalCurrent2}
-                        onBackButtonPress={() => setModalCurrent2(false)} />
                 </View>
                 <View style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 20 }}>
-                    <BtnForm1 text="Reservar" classContainer={{ width: 190 }} onPress={() => submit()} />
+                    <BtnForm1 text="Modificar" classContainer={{ width: 190 }} onPress={() => submit()} />
                 </View>
             </ScrollView>
         </>
     );
 }
 
-export default Citas;
+export default CitasUpdate;
 
 const styles = StyleSheet.create({
     container_top: {

@@ -55,7 +55,7 @@ const CardShop2 = (props) => {
                 <Text style={[styles.category, { color: theme.dark ? "#fff" : "black"}]}>{descripcioN_SER}</Text>
                 <View style={styles.container_icons}>
                     <View style={styles.stars}>
-                        {[1, 2, 3, 4].map(e => <Icon name='star-sharp' size={14} color="#ff9300" style={styles.icon} key={e} />)}
+                        {[1, 2, 3, 4, 5].map(e => <Icon name='star-sharp' size={14} color="#ff9300" style={styles.icon} key={e} />)}
                     </View>
                     
                 </View>

@@ -1,10 +1,11 @@
 import { useTheme } from '@react-navigation/native'
 import React from 'react'
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
-import CardShop2 from './cardShop2'
+import CardShop from './cardEstlistas'
 
 const Recently2 = (props) => {
     const { recomendados } = props
+    console.log("estilistas para ti: ", recomendados);
     const theme = useTheme()
     return (
         <View style={styles.container}>
@@ -14,7 +15,7 @@ const Recently2 = (props) => {
             {!!recomendados ? (
                 recomendados.length > 0 ? (
                     <ScrollView horizontal style={{ paddingBottom: 3 }} showsHorizontalScrollIndicator={false}>
-                        {recomendados.map(e => <CardShop2 {...e} key={e.iD_SERVICIO} />)}
+                        {recomendados.map(e => <CardShop {...e} key={e.id} />)}
                     </ScrollView>
                 ) : (
                     <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>

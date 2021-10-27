@@ -4,6 +4,11 @@ import DatePicker from 'react-native-date-picker';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
 
+const initDateSelect = new Date()
+initDateSelect.setFullYear(2000)
+initDateSelect.setMonth(0)
+initDateSelect.setDate(1)
+
 const DateInputComp = ({ isModalVisible, date, setDate, closeModal, selectDate }) => {
   return (
     <>
@@ -20,7 +25,6 @@ const DateInputComp = ({ isModalVisible, date, setDate, closeModal, selectDate }
               onDateChange={setDate}
               mode="date"
               locale="es_ES"
-              androidVariant="nativeAndroid"
               maximumDate={new Date()}
             //minimumDate={new Date("01/01/1900")}
             />

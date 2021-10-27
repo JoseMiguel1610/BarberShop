@@ -126,37 +126,32 @@ function HistorialCitasEstilista() {
 
 
                     return (
-                        <Pressable style={{ paddingBottom: 20, }} key={a.iD_CITA} onPress={() => a.estado == 1 && OpenModal(a.iD_CITA)}>
+                        <Pressable style={{ paddingBottom: 20, }} key={a.iD_CITA} onPress={() => (a.estado == 1 || a.estado == 5) && OpenModal(a.iD_CITA)}>
                             <Cont_card_color_pressable brad={5} pad={10} bc={'#faf3ec'}  >
-                                <Row_simple flex={1}>
-                                    <Row_simple flex={1} jus_cont={'flex-start'}>
-                                        <Colum_simple jus_cont={'center'} tav={'center'} flex={0.5}>
+                            <Row_simple flex={1}>
+                                    <Row_simple flex={0.4} jus_cont={'flex-start'}>
+                                        <Colum_simple jus_cont={'center'} tav={'center'} >
                                             <Text style={{ color: "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{i + 1}</Text>
                                         </Colum_simple>
-                                        <Colum_simple jus_cont={'center'} tav={'center'}>
-                                            <Text style={{ color: "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{separadorName(a.nombrE_CLIENTE)}</Text>
+                                    </Row_simple>
+                                    <Row_simple flex={1} jus_cont={'flex-start'} alitems={"center"}>
+                                    <Colum_simple >
+                                        <Text style={{ color: "#3b3b3b", fontFamily: "Metropolis-Bold", fontSize: 12 }}>{separadorName(a.nombrE_CLIENTE)}</Text>
 
-                                            <Row_simple jus_cont={'flex-start'}>
-                                                {/* {( a.idTransactionType!=3) &&  <Text style={[textos.tit_det],{color:Colors.colorPrimaryVar2}}>{a.idTransactionType} status {a.idStatus} {  get_transaction_type(a.idTransactionType , User.primarysid , a.idSender) } </Text>} */}
+                                        {/* {( a.idTransactionType!=3) &&  <Text style={[textos.tit_det],{color:Colors.colorPrimaryVar2}}>{a.idTransactionType} status {a.idStatus} {  get_transaction_type(a.idTransactionType , User.primarysid , a.idSender) } </Text>} */}
 
-                                                {/* tipo de  cobro */}
-                                                {<Text style={[textos.text_det], { color: "#3b3b3b", fontFamily: "Metropolis-SemiBold" }}> {getDate(a.fechA_ATENCION)} </Text>}
+                                        {/* tipo de  cobro */}
+                                        <Text style={[textos.text_det], { color: "#3b3b3b", fontFamily: "Metropolis-SemiBold" }}>{getDate(a.fechA_ATENCION)}</Text>
 
+                                        {/* {( a.idTransactionType!=3) &&  <Text style={[textos.tit_det],{color:Colors.colorPrimaryVar2}}>{a.idTransactionType} status {a.idStatus} {  get_transaction_type(a.idTransactionType , User.primarysid , a.idSender) } </Text>} */}
 
-                                            </Row_simple>
-                                            <Row_simple jus_cont={'flex-start'}>
-                                                {/* {( a.idTransactionType!=3) &&  <Text style={[textos.tit_det],{color:Colors.colorPrimaryVar2}}>{a.idTransactionType} status {a.idStatus} {  get_transaction_type(a.idTransactionType , User.primarysid , a.idSender) } </Text>} */}
+                                        {/* tipo de  cobro */}
+                                        {<Text style={[textos.text_det], { color: "#3b3b3b", fontFamily: "Metropolis-SemiBold" }}>{a.horA_RESERVACION}</Text>}
 
-                                                {/* tipo de  cobro */}
-                                                {<Text style={[textos.text_det], { color: "#3b3b3b", fontFamily: "Metropolis-SemiBold" }}> {a.horA_RESERVACION} </Text>}
-
-
-                                            </Row_simple>
-
-                                        </Colum_simple>
+                                    </Colum_simple>
                                     </Row_simple>
                                     <Colum_simple jus_cont={'center'}>
-                                        <View style={{ width: 20, height: 20, borderRadius: 1000, backgroundColor: a.estado == 1 ? "#fae917eb" : a.estado == 2 ? "#1752faeb" : a.estado == 3 ? "#1bc820eb" : "#ee2121eb" }}></View>
+                                        <View style={{ width: 20, height: 20, borderRadius: 1000, backgroundColor: a.estado == 1 ? "#fae917eb" : a.estado == 2 ? "#1752faeb" : a.estado == 3 ? "#1bc820eb" : a.estado == 4 ? "#ee2121eb" : "#fae917eb" }}></View>
                                     </Colum_simple>
                                 </Row_simple>
                             </Cont_card_color_pressable>

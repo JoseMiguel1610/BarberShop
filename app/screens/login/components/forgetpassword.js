@@ -87,22 +87,22 @@ export default function ForgetPassword(props) {
     return (
         <ImageBackground style={styles.containerhead} resizeMode='cover' source={require("../../../../assets/fondo-02.png")}>
             <View style={styles.top}>
-                <Row_simple jus_cont={'flex-start'} alitems={'space-around'} flex={1}>
-                    <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={1}>
+            <Row_simple jus_cont={'flex-start'} alitems={'center'} flex={1}>
+                    <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={0.3}>
                         <Pressable android_ripple={{ color: "#3b3b3b" }}
                             onPress={() => navigation.goBack()}>
                             <Icon5 name='arrow-left' color={"#b99a55"} size={30} />
                         </Pressable>
                     </Colum_simple>
-                    <Colum_simple jus_cont={'center'} alitems={'flex-end'} flex={1}>
+                    <Colum_simple jus_cont={'center'} alitems={'center'} flex={0.9}>
+                            <Text style={{ fontSize: 20, color: "#fff" }}>Restablecimiento de contraseña</Text>
+                    </Colum_simple>
+                    <Colum_simple jus_cont={'center'} alitems={'flex-end'} flex={0.6}>
                         <Image
                             source={require("../../../../assets/logobarber.png")} style={{ width: 100, height: 100 }}>
                         </Image>
                     </Colum_simple>
                 </Row_simple>
-                <View style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
-                    <Text style={{ fontSize: 25, color: "#fff" }}>Restablecimiento de contraseña</Text>
-                </View>
             </View>
             <ScrollView>
                 <View style={styles.container}>

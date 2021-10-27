@@ -36,3 +36,24 @@ export const storeUserData = async (value) => {
         console.log(e)
     }
 }
+
+
+export const themeDark = async (value) => {
+    console.log(value);
+    try {
+        const jsonValue = JSON.stringify(value)
+        await AsyncStorage.setItem('@theme', jsonValue)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const getThemeDark = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('@theme')
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        console.log(e)
+        return false
+    }
+}

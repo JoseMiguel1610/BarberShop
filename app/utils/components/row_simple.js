@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native'
 const Row_simple = (props) => {  
       
     const {jus_cont} =props;
+    const {alitems } =props
     const {pad_top} =props;
     const {pad_bot} =props;
     const {pad_h} =props;
@@ -27,6 +28,7 @@ const Row_simple = (props) => {
         <View  style={[styles.rows,{
         justifyContent:(jus_cont!=null)?jus_cont : "space-between",
         paddingTop:pad_top,
+        alignItems: alitems,
         paddingBottom:pad_bot,
         paddingEnd:pad_end,
         paddingHorizontal:pad_h,

@@ -187,12 +187,17 @@ export default function Register(props) {
     return (
         <ImageBackground style={styles.containerhead} resizeMode='cover' source={require("../../../../assets/fondo-02.png")}>
             <View style={styles.top}>
-                <Row_simple jus_cont={'flex-start'} alitems={'space-around'} flex={1}>
-                    <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={1}>
+                <Row_simple jus_cont={'flex-start'} alitems={'center'} flex={1}>
+                    <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={0.7}>
                         <Pressable android_ripple={{ color: "#3b3b3b" }}
                             onPress={() => navigation.goBack()}>
                             <Icon5 name='arrow-left' color={"#b99a55"} size={30} />
                         </Pressable>
+                    </Colum_simple>
+                    <Colum_simple jus_cont={'center'} alitems={'center'} flex={1}>
+                        <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ fontSize: 20, color: "#fff" }}>Registro</Text>
+                        </View>
                     </Colum_simple>
                     <Colum_simple jus_cont={'center'} alitems={'flex-end'} flex={1}>
                         <Image
@@ -200,9 +205,6 @@ export default function Register(props) {
                         </Image>
                     </Colum_simple>
                 </Row_simple>
-                <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Text style={{ fontSize: 20, color: "#fff" }}>Registro</Text>
-                </View>
             </View>
             <ScrollView>
                 <View style={styles.container}>
@@ -322,7 +324,7 @@ export default function Register(props) {
                             />
                         </View>
                         <ModalSexo setsexo={setSexo} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
-                    onBackButtonPress={() => setModalCurrent(false)} />
+                            onBackButtonPress={() => setModalCurrent(false)} />
 
                         <View style={styles.containerBtn}>
                             <Pressable style={{ width: "100%" }} android_ripple={{ color: "#fff" }}

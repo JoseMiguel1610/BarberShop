@@ -1,3 +1,3 @@
 export const Config = {
-    URL_SERVER: 'https://b190-161-132-234-113.ngrok.io/api'
+    URL_SERVER: 'https://rocky-bayou-91295.herokuapp.com/api'
 }

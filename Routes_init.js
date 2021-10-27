@@ -7,7 +7,7 @@ import { useTheme } from '@react-navigation/native';
 import Loading from './app/screens/loading';
 import LoginStack from './app/navigator/loginStack'
 import HomeStack from './app/navigator/SideBar/homeStack';
-import { getJWT, getListFertilizantes, getListRegisters, getListRiesgo, getListTipFertilizantes, getListTipRiesgo, getUserData } from './app/utils/AsyncStore';
+import { getJWT, getListFertilizantes, getListRegisters, getListRiesgo, getListTipFertilizantes, getListTipRiesgo, getThemeDark, getUserData } from './app/utils/AsyncStore';
 import { AddRegistersFertilizantes, AddRegistersRiesgo, AddRegistersTipFertilizantes, AddRegistersTipRiesgo, SaveListFertilizantes, SaveListRegisters, SaveListRiesgo, SaveListTipFertilizantes, SaveListTipRiesgo } from './app/actions/ProductionActions';
 import { SaveLogin, SaveToken, SaveUser } from './app/actions/loginActions';
 

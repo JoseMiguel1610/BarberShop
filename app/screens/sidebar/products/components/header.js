@@ -24,7 +24,7 @@ const Header = ({ nameCategory, subCategorys, indSubcatSelect, indSubcat, stores
         <>
             <ImageBackground style={styles.container_top} source={require("../../../../../assets/fondo-02.png")} >
             <View style={styles.top}>
-                    <Row_simple jus_cont={'flex-start'} alitems={'space-around'} flex={1}>
+                    <Row_simple alitems={'center'} jus_cont={'flex-start'} flex={1}>
                         <Colum_simple jus_cont={'center'} alitems={'flex-start'} flex={1}>
                             <Pressable android_ripple={{ color: "#3b3b3b" }}
                                 onPress={() => navigation.goBack()}>
