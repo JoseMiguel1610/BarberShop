@@ -159,7 +159,7 @@ const CitasUpdate = (props) => {
                         [
                             {
                                 text: "Ok",
-                                onPress: () => { navigation.navigate("HistorialCitas") }
+                                onPress: () => { navigation.navigate("HistorialCitas", { refresh: true}) }
                             }
                         ]
                     )

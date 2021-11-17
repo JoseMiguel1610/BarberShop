@@ -23,7 +23,6 @@ import ModalCategoria from './components/modalCategoria';
 
 const EditProfileAdmin = (props) => {
     const { navigation, route: { params: { props: user } } } = props
-    console.log("EditprofileAdmin: ", user);
     const [formData, setFormData] = useState(formDataInit)
     const [loading1, setLoading1] = useState(false)
     const [loading2, setLoading2] = useState(false)
@@ -92,6 +91,8 @@ const EditProfileAdmin = (props) => {
                     setSexo(userData.iD_SEXO)
                     setinforol(userData.rol)
                     setrol(userData.iD_ROL)
+                    setcate(userData.iD_CATE)
+                    setinfocate(userData.cate)
                     setLoading1(false)
                 }
             }
@@ -107,7 +108,7 @@ const EditProfileAdmin = (props) => {
     }, [])
 
     useEffect(() => {
-        if(rol != 4){
+        if (rol != 4) {
             setcate(null)
             setinfocate(null)
         }
@@ -115,50 +116,99 @@ const EditProfileAdmin = (props) => {
     }, [rol])
 
     async function submit() {
-        if (!name || !dni || !email || !birthdate || !lastnameP || !lastnameM || !sexo) {
-            const formData = {
-                dni: dni,
-                apE_PAT: lastnameP,
-                apE_MAT: lastnameM,
-                nombre: name,
-                fechA_NACIMIENTO: birthdate,
-                correo: email,
-                contrasena: contrasena,
-                iD_SEXO: sexo
-            }
-            console.log(formData);
-            return Alert.alert(
-                "Alerta",
-                "Llene todo los campos",
-                [{ text: "Aceptar", style: "default" }]
-            )
-        } else {
-            setLoading2(true)
-            const formData = {
-                dni: dni,
-                apE_PAT: lastnameP,
-                apE_MAT: lastnameM,
-                nombre: name,
-                fechA_NACIMIENTO: birthdate,
-                correo: email,
-                iD_SEXO: sexo,
-                iD_ROL: rol,
-                iD_CATE: cate
-            }
-            console.log(formData);
-            try {
-                const res = await Axios.put(url_data + "/admin", formData, { headers: { "authorization": `Bearer ${Token}` } });
-                console.log(res.data);
-                setLoading2(false)
-                dispatch(GetDataLogin(navigation))
-                Alert.alert(
-                    "Mensaje",
-                    "Los datos fueron actualizados.",
+        if (rol != 4) {
+            if (!name || !dni || !email || !birthdate || !lastnameP || !lastnameM || !sexo || !rol) {
+                const formData = {
+                    dni: dni,
+                    apE_PAT: lastnameP,
+                    apE_MAT: lastnameM,
+                    nombre: name,
+                    fechA_NACIMIENTO: birthdate,
+                    correo: email,
+                    contrasena: contrasena,
+                    iD_SEXO: sexo
+                }
+                console.log(formData);
+                return Alert.alert(
+                    "Alerta",
+                    "Llene todo los campos",
                     [{ text: "Aceptar", style: "default" }]
                 )
-            } catch (error) {
-                setLoading2(false)
-                actionByError(error, navigation)
+            } else {
+                setLoading2(true)
+                const formData = {
+                    dni: dni,
+                    apE_PAT: lastnameP,
+                    apE_MAT: lastnameM,
+                    nombre: name,
+                    fechA_NACIMIENTO: birthdate,
+                    correo: email,
+                    iD_SEXO: sexo,
+                    iD_ROL: rol,
+                    iD_CATE: cate
+                }
+                console.log(formData);
+                try {
+                    const res = await Axios.put(url_data + "/admin", formData, { headers: { "authorization": `Bearer ${Token}` } });
+                    console.log(res.data);
+                    setLoading2(false)
+                    dispatch(GetDataLogin(navigation))
+                    Alert.alert(
+                        "Mensaje",
+                        "Los datos fueron actualizados.",
+                        [{ text: "Aceptar", style: "default" }]
+                    )
+                } catch (error) {
+                    setLoading2(false)
+                    actionByError(error, navigation)
+                }
+            }
+        }else{
+            if (!name || !dni || !email || !birthdate || !lastnameP || !lastnameM || !sexo || !rol || !cate) {
+                const formData = {
+                    dni: dni,
+                    apE_PAT: lastnameP,
+                    apE_MAT: lastnameM,
+                    nombre: name,
+                    fechA_NACIMIENTO: birthdate,
+                    correo: email,
+                    contrasena: contrasena,
+                    iD_SEXO: sexo
+                }
+                console.log(formData);
+                return Alert.alert(
+                    "Alerta",
+                    "Llene todo los campos",
+                    [{ text: "Aceptar", style: "default" }]
+                )
+            } else {
+                setLoading2(true)
+                const formData = {
+                    dni: dni,
+                    apE_PAT: lastnameP,
+                    apE_MAT: lastnameM,
+                    nombre: name,
+                    fechA_NACIMIENTO: birthdate,
+                    correo: email,
+                    iD_SEXO: sexo,
+                    iD_ROL: rol,
+                    iD_CATE: cate
+                }
+                console.log(formData);
+                try {
+                    const res = await Axios.put(url_data + "/admin", formData, { headers: { "authorization": `Bearer ${Token}` } });
+                    console.log(res.data);
+                    setLoading2(false)
+                    dispatch(GetDataLogin(navigation))
+                    Alert.alert(
+                        "Mensaje",
+                        "Los datos fueron actualizados.",
+                        [{ text: "Aceptar", style: "default" }]
+                    )
+                } catch (error) {
+                    setLoading2(false)
+                    actionByError(error, navigation)
+                }
             }
         }
     }
@@ -262,7 +312,7 @@ const EditProfileAdmin = (props) => {
                         value={birthdate ? moment(birthdate).format('DD/MM/YYYY') : ""}
                         editable={false}
                         onChangeText={(e) => setBirthdate(e)}
-                        style={[styles.input, { color: "#000" }]}
+                        style={styles.input}
                     />
                 </View>
                 {date && <DateInputComp isModalVisible={isModalVisible} date={date}
@@ -276,7 +326,7 @@ const EditProfileAdmin = (props) => {
                         keyboardType="default"
                         value={sexo && sexo == 1 ? "Masculino" : "Femenino"}
                         editable={false}
-                        style={[styles.input, { color: "#000" }]}
+                        style={styles.input}
                     />
                 </View>
                 <ModalSexo setsexo={setSexo} isModalVisible={modalCurrent} toggleModal={toggleModalCurrent}
@@ -290,7 +340,7 @@ const EditProfileAdmin = (props) => {
                         keyboardType="default"
                         value={inforol}
                         editable={false}
-                        style={[styles.input, { color: "#000" }]}
+                        style={styles.input}
                     />
                 </View>
                 <ModalRol setinforol={setinforol} setrol={setrol} isModalVisible={modalCurrent2} toggleModal={toggleModalCurrent2}
@@ -305,7 +355,7 @@ const EditProfileAdmin = (props) => {
                                 keyboardType="default"
                                 value={infocate}
                                 editable={false}
-                                style={[styles.input, { color: "#000" }]}
+                                style={styles.input}
                             />
                         </View>
                     </View>
@@ -378,7 +428,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         color: "#000",
-        fontFamily: "Metropolis-Bold"
+        fontFamily: "Metropolis-Semibold"
     },
     label: {
         color: "#959393",

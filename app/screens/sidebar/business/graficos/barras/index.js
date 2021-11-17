@@ -28,7 +28,6 @@ function GraficoBarras(props) {
     const nombrecompleto = nombre + " " + apE_PAT + " " + apE_MAT;
     const [lastback, setlastback] = useState([])
     const [loading, setLoading1] = useState(false)
-    const [loading2, setLoading2] = useState(false)
     const theme = useTheme();
     const navigation = useNavigation()
     const [nivel, setNivel] = useState([20, 45, 28, 80, 99, 43])
@@ -104,7 +103,6 @@ function GraficoBarras(props) {
 
         >
             <SpinnerModal loading={loading} text="Cargando" />
-            <SpinnerModal loading={loading2} text="Generando Backup" />
             <View style={styles.container}>
                 <Pressable android_ripple={{ color: "#b99a55", radius: 15 }} style={{ width: 30 }}
                     onPress={() => navigation.goBack()}>

@@ -73,7 +73,7 @@ export function DrawerContent(props) {
                                 <Oticons name='checklist' color={color} size={size} />
                             )}
                             label="Historial de Citas"
-                            onPress={() => { props.navigation.navigate('HistorialCitas') }}
+                            onPress={() => { props.navigation.navigate('HistorialCitas', {refresh : false}) }}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (

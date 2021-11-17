@@ -18,8 +18,10 @@ import BtnForm1 from "../../../utils/components/btnForm1";
 import { useTheme } from "react-native-paper";
 import ModalCancel from "./components/modal";
 import ModalUpdate from "./components/modal2";
-function HistorialCitas() {
-
+function HistorialCitas(props) {
+    const { route : { params } } = props
+    const { refresh } = params
+    console.log(refresh);
     const [lastback, setlastback] = useState([])
     const [loading, setLoading1] = useState(false)
     const [loading2, setLoading2] = useState(false)
@@ -51,22 +53,29 @@ function HistorialCitas() {
         toggleModal2()
     }
     useEffect(() => {
-        async function getCitasUsuario() {
-            setLoading1(true)
-            try {
-                const res = await axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
-                const userData = res.data.objModel
-                console.log(userData);
-                setlastback(userData)
-                setLoading1(false)
-            }
-            catch (error) {
-                setLoading1(false)
-                actionByError(error, navigation)
-            }
-        }
         getCitasUsuario()
     }, [send])
+
+    useEffect(() => {
+        if(refresh == true){
+            getCitasUsuario()
+        }
+    },[refresh])
+
+    async function getCitasUsuario() {
+        setLoading1(true)
+        try {
+            const res = await axios.get(url_data + "/" + User.dni, { headers: { "authorization": `Bearer ${Token}` } });
+            const userData = res.data.objModel
+            console.log(userData);
+            setlastback(userData)
+            setLoading1(false)
+        }
+        catch (error) {
+            setLoading1(false)
+            actionByError(error, navigation)
+        }
+    }
 
     async function validar(date) {
         let dato = new Date(date)
@@ -185,8 +194,8 @@ function HistorialCitas() {
                                     </View> */}
                                     <Row_simple flex={0.5} jus_cont={'center'} alitems={"center"}>
                                         <Colum_simple jus_cont={'center'}>
-                                            <Pressable onPress={() => a.estado == 1 && OpenModal(a.iD_CITA)} style={{ width: "100%" }} android_ripple={{ color: a.estado === 1 && "#b99a55", radius: 15 }}>
-                                                <MateriaIcon name='highlight-remove' color={a.estado == 1 ? "#b99a55" : "#d2cfcf"} size={30} />
+                                            <Pressable onPress={() => (a.estado == 1 || a.estado == 5) && OpenModal(a.iD_CITA)} style={{ width: "100%" }} android_ripple={{ color: (a.estado === 1 || a.estado == 5) && "#b99a55", radius: 15 }}>
+                                                <MateriaIcon name='highlight-remove' color={(a.estado == 1 || a.estado == 5) ? "#b99a55" : "#d2cfcf"} size={30} />
                                             </Pressable>
                                         </Colum_simple>
                                     </Row_simple>

@@ -18,7 +18,7 @@ const Recently2 = (props) => {
                         {recomendados.map(e => <CardShop {...e} key={e.id} />)}
                     </ScrollView>
                 ) : (
-                    <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>
+                    <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 0 }}>
                         
                     </View>
                 )

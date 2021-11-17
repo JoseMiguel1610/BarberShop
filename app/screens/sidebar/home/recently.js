@@ -17,12 +17,12 @@ const Recently = (props) => {
                         {recomendados.map(e => <CardShop2 {...e} key={e.iD_SERVICIO} />)}
                     </ScrollView>
                 ) : (
-                    <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>
+                    <View style={{ justifyContent: "center", alignItems: "flex-start", display: "flex", height: 0 }}>
                         
                     </View>
                 )
             ) : (
-                <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 226 }}>
+                <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: 200 }}>
                     <ActivityIndicator size='large' color='#fc9610' />
                 </View>
             )

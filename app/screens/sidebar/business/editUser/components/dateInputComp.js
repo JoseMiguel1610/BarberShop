@@ -20,7 +20,6 @@ const DateInputComp = ({ isModalVisible, date, setDate, closeModal, selectDate }
               onDateChange={setDate}
               mode="date"
               locale="es_ES"
-              androidVariant="nativeAndroid"
               maximumDate={new Date()}
             //minimumDate={new Date("01/01/1900")}
             />

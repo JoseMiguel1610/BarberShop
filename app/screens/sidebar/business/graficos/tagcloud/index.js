@@ -89,6 +89,7 @@ function GraficoTagCloud(props) {
 
     return (
         <ScrollView style={styles.containerHead}>
+            <SpinnerModal loading={loading} text="Cargando" />
             <View style={styles.container}>
 
                 <Pressable android_ripple={{ color: "#b99a55", radius: 15 }} style={{ width: 30 }}

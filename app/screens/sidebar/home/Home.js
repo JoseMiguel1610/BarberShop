@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, ImageBackground, StyleSheet, TextInput, Image, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, Pressable, ImageBackground, StyleSheet, TextInput, Image, ActivityIndicator, RefreshControl, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Row_simple from '../../../utils/components/row_simple'
@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Col } from 'react-native-table-component';
 import Banner from './banner';
 import { wait } from "../../../utils/others";
-import { ScrollView } from 'react-native-gesture-handler';
 import CardSubcategory from './cardSubcategory';
 import Recently from './recently';
 import { actionByError } from '../../../utils/actionServerResponse';

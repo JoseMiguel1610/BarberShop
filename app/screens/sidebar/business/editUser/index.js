@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TouchableHighlight, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Image, Pressable, StyleSheet, Text, TouchableHighlight, View, RefreshControl, ScrollView } from "react-native";
 import Search_box from "../../../../utils/components/search_box";
 import SpinnerModal from "../../../../utils/components/spinnerModal";
 import Icon from 'react-native-vector-icons/Feather';
@@ -17,9 +16,11 @@ import { ActivityIndicator } from 'react-native-paper';
 import Colum_simple from '../../../../utils/components/colum_simple';
 import Cont_card_color from '../../../../utils/components/cont_card_color';
 import { useTheme } from '@react-navigation/native';
+import { wait } from "../../../../utils/others";
 
 function EditUser() {
     const [spiner_contactosf, setspiner_contactosf] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [email_for_send, setemail_for_send] = useState("")
     const navigation = useNavigation()
     const [loading1, setLoading1] = useState(false)
@@ -56,6 +57,18 @@ function EditUser() {
     useEffect(() =>{
         get_list_allcontact()
     },[])
+
+    useEffect(() => {
+        refreshing && get_list_allcontact() //dispatch(getCategoriesGroupHome(navigation))
+    }, [refreshing]);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setlist_allcontact([]);
+        wait(1000).then(() => {
+            setRefreshing(false);
+        });
+    }, []);
 
     async function get_list_allcontact() {
         //http://45.66.156.160:99/api/Wallets/getUsersByTransactions/9
@@ -101,9 +114,10 @@ function EditUser() {
 
     return (
         <ScrollView style={styles.container}
-
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
-            <SpinnerModal loading={spiner_contactosf} text="Cargando Contactos " />
+            <SpinnerModal loading={refreshing} text="Actualizando contactos" />
+            <SpinnerModal loading={spiner_contactosf} text="Cargando contactos" />
 
             <View style={{ paddingHorizontal: 20,  }}>
                 <Row_simple>
